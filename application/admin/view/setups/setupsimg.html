@@ -1,0 +1,220 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<style>
+	.input-file {
+		width: 100px;
+		height: 32px;
+		position: absolute;
+		left: 220px;
+		top: 0;
+		cursor: pointer;
+		z-index: 1;
+		font-size: 30em;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+	img{
+		width:100%;
+		height:auto;
+	}
+</style>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		系统管理
+		<span class="c-gray en">&gt;</span>
+		游戏资料
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<form action="" method="post" id="goods" class="form form-horizontal">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">登录页图片：</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input class="input-text upload-url" type="text" name="" id="loding" readonly style="width:200px" value="{$info['loading_url']}">
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传
+
+					</a>
+					<input type="file" multiple  name="file-2" class="input-file" id="fileloding" onchange="ajaxSubmit('fileloding')">
+					<input type="hidden" name="loading_url" class="show-fileimg" id="file-filefileloding" value="{$info['loading_url']}">
+
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-xs-4 col-sm-2"></label>
+				<div id="imgshowfileloding" class="formControls col-xs-5 col-sm-3 imgshow">
+					<img src="{$info['loading_url']}" alt="">
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">首页幻灯片：</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input class="input-text upload-url" type="text" name="" id="banner" readonly style="width:200px" value="{$info['banner_url']}">
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传
+
+					</a>
+					<input type="file" multiple  name="file-2" class="input-file" id="filebanner" onchange="ajaxSubmit('filebanner')">
+					<input type="hidden" name="banner_url" class="show-fileimg" id="file-filefilebanner" value="{$info['banner_url']}">
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-xs-4 col-sm-2"></label>
+				<div id="imgshowfilebanner" class="formControls col-xs-5 col-sm-3 imgshow">
+					<img src="{$info['banner_url']}" alt="">
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">公众号二维码：</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input class="input-text upload-url" type="text" name="" id="qrcode" readonly style="width:200px" value="{$info['qrcode_url']}">
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传
+
+					</a>
+					<input type="file" multiple  name="file-2" class="input-file" id="fileqrcode" onchange="ajaxSubmit('fileqrcode')">
+					<input type="hidden" name="qrcode_url" class="show-fileimg" id="file-filefileqrcode" value="{$info['qrcode_url']}">
+				</div>
+			</div>
+			<div class="row cl" >
+				<label class="form-label col-xs-4 col-sm-2"></label>
+				<div id="imgshowfileqrcode" class="formControls col-xs-5 col-sm-3 imgshow">
+					<img src="{$info['qrcode_url']}" alt="">
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">背景音乐：</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input class="input-text upload-url" type="text" name="" id="music" readonly style="width:200px" value="{$info['music_url']}">
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传
+
+					</a>
+					<input type="file" multiple  name="file-2" class="input-file" id="filemusic" onchange="ajaxSubmit('filemusic')">
+					<input type="hidden" name="music_url" class="show-fileimg" id="file-filefilemusic" value="{$info['music_url']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">第一关初始数量</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input type="number" class="input-text" id="one_init" name="one_init" placeholder="数量" value="{$info['one_init']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">第一关时间</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input type="number" class="input-text" id="one_init_s" name="one_init_s" placeholder="时间" value="{$info['one_init_s']}">m
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">第二关初始数量</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input type="number" class="input-text" id="two_init" name="two_init" placeholder="数量" value="{$info['two_init']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">第二关时间</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input type="number" class="input-text" id="two_init_s" name="two_init_s" placeholder="时间" value="{$info['two_init_s']}">m
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">第三关初始数量</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input type="number" class="input-text" id="three_init" name="three_init" placeholder="数量" value="{$info['three_init']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">第三关时间</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input type="number" class="input-text" id="three_init_s" name="three_init_s" placeholder="时间" value="{$info['three_init_s']}">m
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">通关概率：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" name="chance" class="input-text" value="{$info['chance']}" style="width: 60%">%
+				</div>
+			</div>
+
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button id="addgoods" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+
+    function ajaxSubmit(typed) {
+        //console.log(typed,zlids);
+        var formData = new FormData();
+        formData.append('file', $('#' + typed)[0].files[0]);
+        var title = $('#' + typed)[0].files[0].name;
+        var fileName = title;
+        var index = fileName.indexOf("."); //得到"."在第几位
+        var lxext = fileName.substring(index); //截断"."之前的，得到后缀
+        $.ajax({
+            url: "{:url('uploads/uploads')}",
+            type: 'POST',
+            data: formData,
+            dataType: 'JSON',
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false,
+            success: function (res) {
+                console.log(res);
+                $("#file-file"+typed).val(res.data);
+                $("#imgshow"+typed).html("<div class='thumbnail'><img src='" + res.data + "' class='img-responsive'/></div>");
+            }, fail: function (res) {
+                layer.msg("上传失败")
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    $('#addgoods').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            cache: false,
+            dataType:"json",
+            data: $("#goods").serializeArray(),		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    layer.msg("修改成功");
+                    // setTimeout(function () {
+                    //     window.location.href=data.url;
+                    // },500)
+                }
+                if(data.statu == 1){
+                    layer.msg("修改失败");
+                }
+            }
+        })
+    })
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

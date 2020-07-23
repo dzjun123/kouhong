@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/css/weui.css" />
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<style>
+
+    body{
+        background-size: 100% 100%;
+        background-attachment:fixed;
+        background-color:#000;
+    }
+
+    .Refresh{
+        position: fixed;
+        top: 80%;
+        right: 16px;
+        width: 76px;
+        height: 38px;
+        border-radius: 58px;
+        background: rgba(0, 0, 0, 0.425);
+        color: #fff;
+        text-align: center;
+        line-height: 37px;
+        font-size: 16px;
+        z-index: 99;
+    }
+    .cardWrap {
+        position:fixed;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
+    }
+</style>
+<body>
+<div class='indexbg' >
+    <div class="cardWrap" onclick="bindtz();">
+        <button class="Refresh" >跳过</button>
+
+    </div>
+</div>
+<!-- loading toast -->
+<div id="loadingToast" style="display:none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+        <i class="weui-loading weui-icon_toast"></i>
+        <p class="weui-toast__content">数据加载中</p>
+    </div>
+</div>
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.config({$jssdkconfig});
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+           title: "{$jssdksharedata['title']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            }
+        });
+        wx.onMenuShareTimeline({
+             title: "{$jssdksharedata['title_line']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            },
+        })
+
+    })
+</script>
+<script>
+    $(function(){
+        $.ajax({
+            url: "{:url('')}",
+            data: {},
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                console.log(11,res);
+                if(res.code==0){
+                    $("body").attr("style","background:url("+res.data.loading_url +")  no-repeat;    background-size: 100% 100%;\n" +
+                        "  background-attachment: fixed;");
+                }
+            }
+        })
+    });
+    $(function(){
+        var $loadingToast = $('#loadingToast');
+        $('#showLoadingToast').on('click', function(){
+            if ($loadingToast.css('display') != 'none') return;
+
+            $loadingToast.fadeIn(100);
+            setTimeout(function () {
+                $loadingToast.fadeOut(100);
+            }, 2000);
+        });
+    });
+</script>
+<script type="text/javascript">
+    function bindtz(){
+        console.log(23);
+        setTimeout(function(){
+            window.location.href="{:url('index/index')}";
+        },500)
+    }
+</script>
+</html>

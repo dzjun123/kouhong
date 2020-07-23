@@ -1,0 +1,115 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<style>
+	.input-file {
+		width: 100px;
+		height: 32px;
+		position: absolute;
+		left: 220px;
+		top: 0;
+		cursor: pointer;
+		z-index: 1;
+		font-size: 30em;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+</style>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+		<span class="c-gray en">&gt;</span>
+		系统设置
+		<span class="c-gray en">&gt;</span>
+		充值管理
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<form action="" method="post" id="goods" class="form form-horizontal">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">充值金额：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="number" name="price" class="input-text" style="width: 90%" value="">
+					元</div>
+			</div>
+
+
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button id="addgoods" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+
+    function ajaxSubmit(typed) {
+        //console.log(typed,zlids);
+        var formData = new FormData();
+        formData.append('file', $('#' + typed)[0].files[0]);
+        var title = $('#' + typed)[0].files[0].name;
+        var fileName = title;
+        var index = fileName.indexOf("."); //得到"."在第几位
+        var lxext = fileName.substring(index); //截断"."之前的，得到后缀
+        $.ajax({
+            url: "{:url('uploads/uploadi')}",
+            type: 'POST',
+            data: formData,
+            dataType: 'JSON',
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false,
+            success: function (res) {
+                console.log(res);
+                $("#file-fileimg").val(res.data);
+                $("#imgshow").html("<div class='thumbnail'><img src='" + res.data + "' class='img-responsive'/></div>");
+            }, fail: function (res) {
+                alert("上传失败")
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    $('#addgoods').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            cache: false,
+            dataType:"json",
+            data: $("#goods").serializeArray(),		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    alert("添加成功");
+                    setTimeout(function () {
+                        window.location.href=data.url;
+                    },500)
+                }
+                if(data.statu == 1){
+                    alert("添加失败");
+                }
+            }
+        })
+    })
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

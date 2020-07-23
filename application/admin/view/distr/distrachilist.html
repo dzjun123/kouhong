@@ -1,0 +1,223 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		分销管理
+		<span class="c-gray en">&gt;</span>
+		分销绩效
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<!--<div class="panel panel-default mt-20 ">-->
+			<!--<div class="panel-header clearfix">-->
+				<!--<span class="f-l">统计</span>-->
+			<!--</div>-->
+			<!--<div class="panel-body">-->
+				<!--<div style="border:1px solid #ddd;display:inline-block; padding:25px;margin-bottom:2px;">当前总佣金  </div>-->
+
+			<!--</div>-->
+		<!--</div>-->
+		<article class="cl pd-20">
+			<div class="text-c">
+				日期范围：
+				<input type="text" onfocus="WdatePicker()" id="starttime" class="input-text Wdate" style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker()" id="endtime" class="input-text Wdate" style="width:120px;">
+
+				<input type="text" name="nickname" id="nickname" placeholder="推广用户名" style="width:250px" class="input-text">
+				<input type="hidden" name="top_openid" style="width:250px" id="top_openid" value="{$param['top_openid']}"/>
+
+				<button name="" id="search" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+			</div>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg table-hover table-sort">
+
+
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script>
+    $(document).ready(function(){
+        //初始化博客分类树
+        //异步查询数据
+        table = $('.table-sort').dataTable({
+            "bStateSave": false,//状态保存
+            "bServerSide" : true, //是否启动服务器端数据导入
+            "bFilter": false, //去掉默认自带的搜索框
+            "aLengthMenu" : [10,20,40, 60, 100],
+            "sAjaxSource" : "{:url('distr/distrachilist')}",
+            "fnServerParams" : function(aoData) {
+                aoData.push({
+                    "name" : "criteria",
+                    "value" : {
+                        "phone" : $("#phone").val(),
+                        "nickname" : $("#nickname").val(),
+                        "endtime" : $("#endtime").val(),
+                        "starttime" : $("#starttime").val(),
+                        "top_openid" : $("#top_openid").val(),
+                    }
+                });
+            },
+            "aoColumns" : [{
+                "mData" : "nickname",
+                "sTitle" : "充值用户",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "top_nickname",
+                "sTitle" : "推广用户",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c",
+
+            },{
+                "mData" : "orderid",
+                "sTitle" : "订单",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c",
+
+            } ,{
+                "mData" : "price",
+                "sTitle" : "充值金额",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                    "mData" : "re_ratio",
+                    "sTitle" : "比例",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c",
+
+                }
+                ,{
+                    "mData" : "get_price",
+                    "sTitle" : "佣金",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c",
+
+                }
+                ,{
+                    "mData" : "create_time",//对应的属性名
+                    // "bSortable" : false,//是否需要排序，默认是true
+                    "sTitle" : "时间", //列名
+                    "sDefaultContent" : "",//默认值
+                    "sClass" : "text-c"//相当于css中的text-align，有text-l、text-c、text-r（左中右）这三个选择
+                }],
+
+            "columnDefs": [{ "orderable": false, "targets": 1 }],
+            "fnServerData" : function(sSource, aoData, fnCallback) {
+
+                $.ajax({
+                    type : 'POST',
+                    url : sSource,
+                    async : false,
+                    data : {
+                        "aoData" : JSON.stringify(aoData)
+                    },
+                    success : fnCallback,
+
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status + "," + textStatus);
+                    }
+                });
+            },
+            "fnCallback" : function(data, aData, iDisplayIndex) {
+                console.log(22,data);
+            },
+            "fnRowCallback" : function(nRow, aData, iDisplayIndex) {
+                console.log(123,nRow,aData);
+                // // var imgVal = "<a href='"+aData.image_url+"' data-lightbox='gallery' data-title='"+aData.btitle+"'><img width='210' class='picture-thumb' src='"+aData.image_url+"'/></a>";
+                // // $('td:eq(3)', nRow).html(imgVal);
+                //
+                // var cstr =
+                // $('td:eq(9)', nRow).html(cstr);
+                //
+                // return nRow;
+            }
+        });
+        //注册查询按钮事件
+        $("#search").bind("click", function () {
+            //做一些js的格式验证
+            table.fnDraw();
+        });
+
+    });
+
+</script>
+<script type="text/javascript">
+
+    function del(id) {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "{:url('goods/goodsdel')}",
+
+            cache: false,
+
+            dataType:"json",
+
+            data: {
+
+                id:id,
+
+            },		//表单ID
+
+            success: function(data) {
+
+                console.log(data.statu);
+
+                if(data.statu == 0){
+
+                    layer.msg("删除成功");
+
+                    setTimeout(function () {
+
+                        window.location.reload();
+
+                    },500)
+
+                }
+
+                if(data.statu == 1){
+
+                    layer.msg("删除失败");
+
+                }
+
+            }
+
+        })
+
+    }
+
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

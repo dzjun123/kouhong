@@ -1,0 +1,73 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		订单管理
+		<span class="c-gray en">&gt;</span>
+		兑换订单
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<div class="text-c">
+				<span class="select-box inline">
+				<input type="text" name="" style="width:250px" class="input-text">
+				<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+			</div>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+
+				<span class="r">共有数据：<strong>54</strong> 条</span>
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg table-hover table-sort">
+					<thead>
+					<tr class="text-c">
+						<th width="80">关数</th>
+						<th width="80">正转</th>
+						<th width="80">倒转</th>
+						<th width="80">初始口红</th>
+						<th width="80">发射口红</th>
+					</tr>
+					</thead>
+					<tbody>
+					{volist name="list" id="vo"}
+					<tr class="text-c">
+
+						<td>{$vo.level}</td>
+						<td>{$vo.ssz_speed}</td>
+						<td>{$vo.nsz_speed}</td>
+						<td>{$vo.init_number}</td>
+						<td>{$vo.oper_number}</td>
+
+					</tr>
+					{/volist}
+					</tbody>
+				</table>
+			</div>
+			{$list->render()}
+		</article>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

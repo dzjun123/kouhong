@@ -1,0 +1,92 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<style>
+	.input-file {
+		width: 100px;
+		height: 32px;
+		position: absolute;
+		left: 220px;
+		top: 0;
+		cursor: pointer;
+		z-index: 1;
+		font-size: 30em;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+</style>
+<body>
+
+
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="">
+
+
+	<div class="Hui-article">
+		<form action="" method="post" id="goods" class="form form-horizontal">
+			<input type="hidden" name="id" value="{$info['id']}">
+
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">操作类型：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<span class="select-box">
+					<select class="select" size="1" name="statu">
+						<option value="2">通过</option>
+						<option value="3">拒绝</option>
+					</select>
+					</span>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button id="addgoods" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+
+
+<script type="text/javascript">
+    $('#addgoods').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            cache: false,
+            dataType:"json",
+            data: $("#goods").serializeArray(),		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    layer.msg("提交成功");
+                    window.parent.location.reload();
+                    var index = parent.layer.getFrameIndex(window.name);
+                    setTimeout(function () {
+                        parent.layer.close(index);
+                    },500)
+                }else if(data.statu == 1){
+                    layer.msg("提交失败");
+                }else{
+                    layer.msg(data.message);
+				}
+            }
+        })
+    })
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

@@ -1,0 +1,17 @@
+e:{"uniacid":"1","game_id":"431"}
+e:{"h5":"1","uniacid":"1","game_id":"434","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"436","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"436","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"436","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"438","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"436","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"436","platid":"1"}
+e:{"h5":"1","uniacid":"2","game_id":"439","platid":"2"}
+e:{"h5":"1","uniacid":"1","game_id":"440","platid":"1"}
+e:{"h5":"1","uniacid":"2","game_id":"403","platid":"2"}
+e:{"h5":"1","uniacid":"1","game_id":"441","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"442","platid":"1"}
+e:{"h5":"1","uniacid":"2","game_id":"443","platid":"2"}
+e:{"h5":"1","uniacid":"2","game_id":"444","platid":"2"}
+e:{"h5":"1","uniacid":"1","game_id":"445","platid":"1"}
+e:{"h5":"1","uniacid":"1","game_id":"446","platid":"1"}

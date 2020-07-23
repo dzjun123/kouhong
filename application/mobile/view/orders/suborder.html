@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/css/weui.css" />
+    <link rel="stylesheet" href="/static/css/kouhong.css"/>
+    <link rel="stylesheet" href="/static/css/suborder.css"/>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+
+<body>
+<div class="page_article" style="background:#ffffff;padding:10px 15px;padding-bottom:70px;">
+    <div class="article_list_item">
+        <div class="weui-cell weui-cell_access">
+            <div class="weui-cell__hd kh_tcode">订单编号：</div>
+            <div class="weui-cell__bd kh_code" id="orderid">20148754</div>
+        </div>
+        <div class="weui-cell weui-cell_access">
+            <div class="weui-cell__hd kh_tcode">商品详情</div>
+        </div>
+        <div class="weui-cell weui-cell_access goosinfo">
+
+            <div class="weui-cell__hd">
+                <img  src="" id="img_url"/>
+            </div>
+            <div class="weui-cell__bd kh_list_bd">
+                <div class="kh_list_title" style="color:#333333" id="title"></div>
+
+                <div class="item_cell_box">
+                    <div class="kh_pic">正品</div>
+                    <div class="item_cell_flex ">专柜价：￥<text id="ori_pic"></text></div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="weui-cell weui-cell_access">
+            <div class="weui-cell__hd kh_tcode">收货地址</div>
+        </div>
+        <div class="address" id="taddress">
+            <div id="noneaddress" class="article_list_item " >
+                <div class="add">
+                    +
+                </div>
+                <div class="kh_tadd">请填写收货地址</div>
+            </div>
+
+            <div  id="bindaddress" class="article_list_item " style="display:none">
+                <div class="weui-cell__bd kh_address">
+                    <div id="address"></div>
+                    <div id="name"></div>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="footer">
+        <form  class="form-horizontal" role="form" action='' method="post" id="forms">
+        <input id="did" value="{$info['id']}" name="prize_id" type="hidden"/>
+        <input id="goods_id" value="" name="goods_id" type="hidden"/>
+            <input id="sname" value="" name="name" type="hidden"/>
+            <input id="saddress" value="" name="address" type="hidden"/>
+            <input id="phone" value="" name="phone" type="hidden"/>
+            <input id="openid" value="{$user['openid']}" name="openid" type="hidden"/>
+
+
+        <button type="button" class="kh_btn" id="subbtn" >提交订单</button>
+        </form>
+    </div>
+</div>
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/layer.js"></script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.config({$jssdkconfig});
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+           title: "{$jssdksharedata['title']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            }
+        });
+        wx.onMenuShareTimeline({
+           title: "{$jssdksharedata['title_line']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            },
+        })
+
+    })
+</script>
+<script>
+    $("#taddress").click(function(){
+        wx.config(
+            {$jssdk}
+        );
+        wx.ready(function () {
+            wx.openAddress({
+                success: function (res) {
+                    console.log(132,res);
+
+                    var userName = res.userName; // 收货人姓名
+                    $("#sname").val(userName);
+
+                    var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
+                    var cityName = res.cityName; // 国标收货地址第二级地址（市）
+                    var countryName = res.countryName; // 国标收货地址第三级地址（国家）
+                    var detailInfo = res.detailInfo; // 详细收货地址信息
+                    var telNumber = res.telNumber; // 收货人手机号码
+                    $("#phone").val(telNumber);
+                    $("#saddress").val(provinceName+cityName+countryName+detailInfo);
+                    $("#address").html(provinceName+cityName+countryName+detailInfo);
+                    $("#name").html(userName + telNumber);
+                    $("#noneaddress").attr("style","display:none");
+                    $("#bindaddress").attr("style","display:block");
+
+
+                },
+                cancel: function (errMsg) {
+                    // 用户取消拉出地址
+                    // alert(errMsg);
+                    $("#noneaddress").attr("style","display:block");
+                    $("#bindaddress").attr("style","display:none");
+                }
+            });
+        })
+
+    })
+
+</script>
+<script type="text/javascript">
+    $(function() {
+        var id=$("#did").val();
+        $.ajax({
+            url: "{:url('member/myrougeinfo')}",
+            data: {prize_id:id},
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                console.log(66, res);
+                if (res.code == 0) {
+                    $("#orderid").text(res.data.orderid);
+                    $("#img_url").attr("src",res.data.img_url);
+                    $("#ori_pic").text(res.data.ori_price);
+                    $("#title").text(res.data.title);
+                    $("#address").text(res.data.address);
+                    $("#name").text(res.data.name + res.data.phone );
+                    $("#goods_id").val(res.data.goods_id);
+
+                   var isare= $("#is_sh_address").text(res.data.is_sh_address);
+                   if(isare==1){
+                     $("#noneaddress").attr("style","display:none");
+                       $("#bindaddress").attr("style","display:block");
+                   }else if(isare==2){
+                       $("#noneaddress").attr("style","display:block");
+                       $("#bindaddress").attr("style","display:none");
+                    }
+                }
+            }
+        });
+    })
+</script>
+<script>
+    $("#subbtn").click(function(){
+        var add=$("#saddress").val();
+        var name=$("#sname").val();
+        var phone=$("#phone").val();
+        if(add==""||name==""||phone==""){
+            layer.msg("请填写完整信息。");
+            return false
+        }
+        $.ajax({
+            url: "{:url('')}",
+            type: "post",
+            data: $("#forms").serialize(),
+            success: function (data) {
+                console.log(11111,data);
+                if(data.code==0){
+                    setTimeout(function(){
+                        window.location.href ="{:url('orders/orderlist',array('platid'=>$user['uniacid']))}";
+                    },1500)
+                }else{
+                }
+            }
+        })
+    })
+</script>
+</html>

@@ -1,0 +1,171 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title>赢口红</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a>
+		<span class="c-999 en">&gt;</span>
+		<span class="c-666">我的桌面</span>
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<p class="f-20 text-success">欢迎进入
+			</p>
+			<div class="text-c">
+				<!--<span class="select-box inline">-->
+				<!--<select name="cate_id" class="select" id="statu">-->
+					<!--<option value="">订单状态</option>-->
+
+					<!--<option value="1">未发货订单</option>-->
+                    <!--<option value="3">已发货订单</option>-->
+				<!--</select>-->
+				<!--</span>-->
+				日期范围：
+				<input type="text" onfocus="WdatePicker()" id="starttime" class="input-text Wdate" style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker()" id="endtime" class="input-text Wdate" style="width:120px;">
+
+
+				<button name="" id="search" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+
+			</div>
+			<table class="table table-border table-bordered table-bg" style="margin-top:30px;">
+				<thead>
+				<tr>
+					<th colspan="7" scope="col">信息统计</th>
+				</tr>
+				<tr class="text-c">
+					<th>统计</th>
+					<th>订单数</th>
+					<th>充值金额</th>
+					<th>中奖数</th>
+					<th>用户数</th>
+
+				</tr>
+				</thead>
+				<tbody>
+				<tr class="text-c">
+					<td>总数</td>
+					<td id="pay_num"></td>
+					<td id="pay_price"></td>
+					<td id="prize"></td>
+					<td id="user"></td>
+				</tr>
+
+				</tbody>
+			</table>
+			<div class="panel panel-default" style="margin-top:30px;">
+				<div class="panel-header">分销统计</div>
+				<div class="panel-body">
+					<table class="table table-border table-bordered table-bg">
+						<thead>
+						<tr>
+							<th colspan="7" scope="col">信息统计</th>
+						</tr>
+						<tr class="text-c">
+							<th>统计</th>
+							<th>分销用户</th>
+							<th>已提现金额</th>
+							<th>未提现金额</th>
+							<th>分销绩效总数</th>
+
+						</tr>
+						</thead>
+						<tbody>
+						<tr class="text-c">
+							<td>总数</td>
+							<td id="ren_num"></td>
+							<td id="y_get_achi_price"></td>
+							<td id="get_achi_price"></td>
+							<td id="achi_price"></td>
+						</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</article>
+		<footer class="footer">
+			<p>Copyright &copy;2018 yiszh.com v1.0 All Rights Reserved.<br> </p>
+		</footer>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+<script>
+	$(function(){
+
+        getdata();
+	})
+	$("#search").click(function(){
+
+
+        getdata();
+	});
+function getdata(){
+    var starttime=$("#starttime").val();
+    var endtime=$("#endtime").val();
+    $.ajax({
+
+        type: "POST",
+
+        url: "{:url('index/index')}",
+
+        cache: false,
+
+        dataType:"json",
+
+        data: {
+            starttime:starttime,
+            endtime:endtime,
+
+        },		//表单ID
+
+        success: function(data) {
+
+            console.log(111,data);
+
+            if(data.statu == 0){
+
+              $("#pay_num").html(data.data.pay_num);
+                $("#pay_price").html("￥"+data.data.pay_price);
+                $("#prize").html(data.data.prize);
+                $("#user").html(data.data.user);
+                $("#ren_num").html(data.data.ren_num);
+                $("#y_get_achi_price").html("￥"+data.data.y_get_achi_price);
+                $("#get_achi_price").html("￥"+data.data.get_achi_price);
+                $("#achi_price").html("￥"+data.data.achi_price);
+
+
+
+            }
+
+            if(data.statu == 1){
+
+                layer.msg(data.msg);
+
+            }
+
+        }
+
+    })
+}
+</script>
+</body>
+</html>

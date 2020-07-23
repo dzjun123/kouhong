@@ -1,0 +1,241 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title>商品列表</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<style>
+	.pagination {
+		display: inline-block;
+		padding-left: 0;
+		margin: 20px 0;
+		border-radius: 4px;
+	}
+	.pagination > li {
+		display: inline;
+	}
+	.pagination > li > a,
+	.pagination > li > span {
+		position: relative;
+		float: left;
+		padding: 6px 12px;
+		margin-left: -1px;
+		line-height: 1.42857143;
+		color: #337ab7;
+		text-decoration: none;
+		background-color: #fff;
+		border: 1px solid #ddd;
+	}
+	.pagination > li:first-child > a,
+	.pagination > li:first-child > span {
+		margin-left: 0;
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+	}
+	.pagination > li:last-child > a,
+	.pagination > li:last-child > span {
+		border-top-right-radius: 4px;
+		border-bottom-right-radius: 4px;
+	}
+	.pagination > li > a:hover,
+	.pagination > li > span:hover,
+	.pagination > li > a:focus,
+	.pagination > li > span:focus {
+		z-index: 2;
+		color: #23527c;
+		background-color: #eee;
+		border-color: #ddd;
+	}
+	.pagination > .active > a,
+	.pagination > .active > span,
+	.pagination > .active > a:hover,
+	.pagination > .active > span:hover,
+	.pagination > .active > a:focus,
+	.pagination > .active > span:focus {
+		z-index: 3;
+		color: #fff;
+		cursor: default;
+		background-color: #337ab7;
+		border-color: #337ab7;
+	}
+	.pagination > .disabled > span,
+	.pagination > .disabled > span:hover,
+	.pagination > .disabled > span:focus,
+	.pagination > .disabled > a,
+	.pagination > .disabled > a:hover,
+	.pagination > .disabled > a:focus {
+		color: #777;
+		cursor: not-allowed;
+		background-color: #fff;
+		border-color: #ddd;
+	}
+	.pagination-lg > li > a,
+	.pagination-lg > li > span {
+		padding: 10px 16px;
+		font-size: 18px;
+		line-height: 1.3333333;
+	}
+	.pagination-lg > li:first-child > a,
+	.pagination-lg > li:first-child > span {
+		border-top-left-radius: 6px;
+		border-bottom-left-radius: 6px;
+	}
+	.pagination-lg > li:last-child > a,
+	.pagination-lg > li:last-child > span {
+		border-top-right-radius: 6px;
+		border-bottom-right-radius: 6px;
+	}
+	.pagination-sm > li > a,
+	.pagination-sm > li > span {
+		padding: 5px 10px;
+		font-size: 12px;
+		line-height: 1.5;
+	}
+	.pagination-sm > li:first-child > a,
+	.pagination-sm > li:first-child > span {
+		border-top-left-radius: 3px;
+		border-bottom-left-radius: 3px;
+	}
+	.pagination-sm > li:last-child > a,
+	.pagination-sm > li:last-child > span {
+		border-top-right-radius: 3px;
+		border-bottom-right-radius: 3px;
+	}
+</style>
+
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		商品管理
+		<span class="c-gray en">&gt;</span>
+		商品列表
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<div class="text-c">
+				<form method="get" action="">
+				<span class="select-box inline">
+				<input type="text" name="title" placeholder=" 产品名称" style="width:250px" class="input-text">
+				<button name="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+				</span>
+				</form>
+			</div>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+				<span class="l">
+				<a class="btn btn-primary radius" href="{:url('goods/goodsadd')}"><i class="Hui-iconfont">&#xe600;</i> 添加</a>
+				</span>
+				<span class="r">共有数据：<strong>54</strong> 条</span>
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg table-hover table-sort">
+					<thead>
+					<tr class="text-c">
+
+						<th width="80">ID</th>
+						<th width="80">缩略图</th>
+						<th width="80">品牌</th>
+						<th width="80">名称</th>
+						<th width="100">专柜价格</th>
+						<th width="75">游戏价格</th>
+                                                <th width="50">难度</th>
+						<th width="75">时间</th>
+						<th width="120">操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					{volist name="list" id="vo"}
+					<tr class="text-c">
+
+						<td>{$vo.id}</td>
+						<td><img width="60" class="product-thumb" src="{$vo.img_url}"></td>
+						<td>{$vo.brand}</td>
+						<td>{$vo.title}</td>
+						<td>{$vo.ori_price}</td>
+						<td>{$vo.price}</td>
+                                                <td>{$vo.hard}</td>
+						<td>{$vo.create_time}</td>
+
+						<td class="f-14 td-manage">
+							<a style="text-decoration:none" class="ml-5" href="{:url('goods/goodsedit',array('id'=>$vo['id']))}" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>
+							<a style="text-decoration:none" class="ml-5" onclick="del({$vo['id']})" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+					</tr>
+					{/volist}
+					</tbody>
+				</table>
+				{$list->render()}
+			</div>
+		</article>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+
+    function del(id) {
+       var r=confirm("确定要删除吗")
+        if (r==true)
+          {
+               $.ajax({
+
+            type: "POST",
+
+            url: "{:url('goods/goodsdel')}",
+
+            cache: false,
+
+            dataType:"json",
+
+            data: {
+
+                id:id,
+
+            },		//表单ID
+
+            success: function(data) {
+
+                console.log(data.statu);
+
+                if(data.statu == 0){
+
+                    layer.msg("删除成功");
+
+                    setTimeout(function () {
+
+                        window.location.reload();
+
+                    },500)
+
+                }
+
+                if(data.statu == 1){
+
+                    layer.msg("删除失败");
+
+                }
+
+            }
+
+        });
+           
+          }
+       
+
+    }
+
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

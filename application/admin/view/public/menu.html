@@ -1,0 +1,111 @@
+<aside class="Hui-aside">
+	<div class="menu_dropdown bk_2">
+        {if condition="(session('userlevel') == 1)"}
+		<dl id="menu-plat">
+			<dt><i class="Hui-iconfont">&#xe616;</i> 开户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li  class="child-platlist"><a href="{:url('plat/platlist')}" title="开户管理">开户管理</a></li>
+				</ul>
+			</dd>
+		</dl>
+        {/if}
+		<dl id="menu-goods">
+			<dt><i class="Hui-iconfont">&#xe616;</i> 产品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li  class="child-goodslist child-goodsadd child-goodsedit">
+						<a href="{:url('goods/goodslist')}" title="产品管理">产品管理</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-orders">
+			<dt><i class="Hui-iconfont">&#xe613;</i> 订单管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li class="child-orderlist child-orderedit">
+						<a href="{:url('orders/orderlist')}" title="兑换订单">兑换订单</a>
+					</li>
+					<li class="child-prizelist">
+						<a href="{:url('member/prizelist')}" title="中奖列表">中奖列表</a>
+					</li>
+
+					<li class="child-payloglist ">
+						<a href="{:url('paylog/payloglist')}" title="支付订单">支付订单</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-member">
+			<dt><i class="Hui-iconfont">&#xe620;</i> 用户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li class="child-memberlist">
+						<a href="{:url('member/memberlist')}" title="用户管理">用户管理</a></li>
+
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-games">
+			<dt><i class="Hui-iconfont">&#xe622;</i> 游戏管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+
+					<!--<li class="child-gameslist">-->
+						<!--<a href="{:url('games/gameslist')}" title="意见反馈">游戏关卡</a></li>-->
+					<li class="child-gamelist">
+						<a href="{:url('member/gamelist')}" title="评论列表">游戏记录</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-distr">
+			<dt><i class="Hui-iconfont">&#xe622;</i> 分销管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+
+					<li class="child-setdistr">
+						<a href="{:url('distr/setdistr')}" title="分销设置">分销设置</a></li>
+					<li class="child-distruserlist">
+						<a href="{:url('distr/distruserlist')}" title="分销用户">分销用户</a></li>
+					<li class="child-distrachilist">
+						<a href="{:url('distr/distrachilist')}" title="分销绩效">分销绩效</a></li>
+					<li class="child-distrgetmoneylist">
+						<a href="{:url('distr/distrgetmoneylist')}" title="分销提现">分销提现</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-share">
+			<dt><i class="Hui-iconfont">&#xe622;</i> 分享管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+
+					<li class="child-setshare">
+						<a href="{:url('share/setshare')}" title="分享设置">分享设置</a></li>
+					<li class="child-sharelist">
+						<a href="{:url('share/sharelist')}" title="分享记录">分享记录</a></li>
+
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-setups">
+			<dt><i class="Hui-iconfont">&#xe60d;</i> 系统设置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li class="child-setups">
+						<a href="{:url('setups/setups')}" title="系统设置">系统设置</a></li>
+					<li class="child-setupsgg">
+						<a href="{:url('setups/setupsgg')}" title="公告设置">公告设置</a></li>
+					<li class="child-setupssm">
+						<a href="{:url('setups/setupssm')}" title="说明设置">说明设置</a></li>
+					<li class="child-setupsimg">
+						<a href="{:url('setups/setupsimg')}" title="游戏资料">游戏资料</a></li>
+					<li class="child-rulelist">
+						<a href="{:url('rule/rulelist')}" title="充值面额">充值面额</a></li>
+					<li class="child-advertlist">
+						<a href="{:url('advert/advertlist')}" title="广告设置">广告设置</a></li>
+				</ul>
+			</dd>
+		</dl>
+
+	</div>
+</aside>
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

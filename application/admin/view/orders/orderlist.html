@@ -1,0 +1,288 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title>兑换订单</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		订单管理
+		<span class="c-gray en">&gt;</span>
+		兑换订单
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<div class="text-c">
+				<span class="select-box inline">
+				<select name="cate_id" class="select" id="statu">
+					<option value="">订单状态</option>
+
+					<option value="1">未发货订单</option>
+                    <option value="3">已发货订单</option>
+				</select>
+				</span>
+                日期范围：
+                <input type="text" onfocus="WdatePicker()" id="starttime" class="input-text Wdate" style="width:120px;">
+                -
+                <input type="text" onfocus="WdatePicker()" id="endtime" class="input-text Wdate" style="width:120px;">
+                <input type="text" name="nickname" id="nickname" style="width:250px" class="input-text" placeholder="用户名/UID/手机号">
+
+                <input type="hidden" name="openid" style="width:250px" id="openid" value="{$param['openid']}"/>
+
+                <button name="" id="search" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+
+			</div>
+			<!--<div class="cl  mt-20">-->
+                <!--<div id="tab_demo" class="HuiTab">-->
+                    <!--<div class="tabBar clearfix">-->
+                        <!--<span class="current">兑换订单</span>-->
+                        <!--<span>待提交订单</span>-->
+                        <!--<span>待发货订单</span>-->
+                        <!--<span>已发货订单</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+			<!--</div>-->
+			<div class=" pd-10">
+				<table class="table table-border table-bordered table-bg table-hover table-sort">
+
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<script>
+    $(document).ready(function(){
+        //初始化博客分类树
+        //异步查询数据
+        table = $('.table-sort').dataTable({
+            "bStateSave": false,//状态保存
+            "bServerSide" : true, //是否启动服务器端数据导入
+            "bFilter": false, //去掉默认自带的搜索框
+            "aLengthMenu" : [10,20,40, 60, 100],
+            "sAjaxSource" : "{:url('orders/orderlist')}",
+            "fnServerParams" : function(aoData) {
+                aoData.push({
+                    "name" : "criteria",
+                    "value" : {
+
+                            "statu" : $("#statu").val(),
+                        "phone" : $("#phone").val(),
+                        "nickname" : $("#nickname").val(),
+                        "endtime" : $("#endtime").val(),
+                        "starttime" : $("#starttime").val(),
+                        "openid" : $("#openid").val(),
+                    }
+                });
+            },
+            "aoColumns" : [{
+                "mData" : "id",
+                "sTitle" : "ID",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "img_url",
+                "sTitle" : "缩略图",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c",
+                "mRender" : function(data,type,full) {
+                    console.log(full);
+                    return '<img src="'+data+'" style="width: 60px"/>';
+                },
+            } ,{
+                "mData" : "title",
+                "sTitle" : "品名",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "name",//对应的属性名
+                // "bSortable" : false,//是否需要排序，默认是true
+                "sTitle" : "中奖人", //列名
+                "sDefaultContent" : "",//默认值
+                "sClass" : "text-c"//相当于css中的text-align，有text-l、text-c、text-r（左中右）这三个选择
+            }
+                ,{
+                    "mData" : "nickname",//对应的属性名
+                    // "bSortable" : false,//是否需要排序，默认是true
+                    "sTitle" : "昵称", //列名
+                    "sDefaultContent" : "",//默认值
+                    "sClass" : "text-c"//相当于css中的text-align，有text-l、text-c、text-r（左中右）这三个选择
+                },{
+                    "mData" : "phone",
+                    "sTitle" : "电话",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                }
+                ,{
+                    "mData" : "address",
+                    "sTitle" : "收货地址",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                }
+                ,{
+                    "mData" : "courier_no",
+                    "sTitle" : "物流单号",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                }
+                ,{
+                    "mData" : "create_time",
+                    "sTitle" : "提交时间",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "statu",
+                    "sTitle" : "发货状态",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "put_time",
+                    "sTitle" : "发货时间",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "id",
+                    "sTitle" : "操作",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c",
+                    "mRender" : function(data,type,full) {
+                        console.log(data);
+
+                            return "<a title='编辑' href='javascript:void(0);' onclick='member_edit("+data+")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6df;</i></a>";
+
+
+                    },
+                },],
+
+            "columnDefs": [{ "orderable": false, "targets": 1 }],
+            "fnServerData" : function(sSource, aoData, fnCallback) {
+
+                $.ajax({
+                    type : 'POST',
+                    url : sSource,
+                    async : false,
+                    data : {
+                        "aoData" : JSON.stringify(aoData)
+                    },
+                    success : fnCallback,
+
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status + "," + textStatus);
+                    }
+                });
+            },
+            "fnCallback" : function(data, aData, iDisplayIndex) {
+                console.log(22,data);
+            },
+            "fnRowCallback" : function(nRow, aData, iDisplayIndex) {
+                console.log(123,nRow,aData);
+                // // var imgVal = "<a href='"+aData.image_url+"' data-lightbox='gallery' data-title='"+aData.btitle+"'><img width='210' class='picture-thumb' src='"+aData.image_url+"'/></a>";
+                // // $('td:eq(3)', nRow).html(imgVal);
+                //
+                // var cstr =
+                // $('td:eq(9)', nRow).html(cstr);
+                //
+                // return nRow;
+            }
+        });
+        //注册查询按钮事件
+        $("#search").bind("click", function () {
+            //做一些js的格式验证
+            table.fnDraw();
+        });
+
+    });
+
+</script>
+<script>
+
+</script>
+<script>
+    function member_edit(uid){
+        var title = "操作";
+        var url = "{:url('orders/orderedit')}?id="+uid;
+        var index = layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['60%', '70%'],
+            content: url
+        });
+        // layer.full(index);
+        // layer_show(title,url,w,h);
+    }
+</script>
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+
+    function del(id) {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "{:url('orders/orderdel')}",
+
+            cache: false,
+
+            dataType:"json",
+
+            data: {
+
+                id:id,
+
+            },		//表单ID
+
+            success: function(data) {
+
+                console.log(data.statu);
+
+                if(data.statu == 0){
+
+                    layer.msg("删除成功");
+
+                    setTimeout(function () {
+
+                        window.location.reload();
+
+                    },500)
+
+                }
+
+                if(data.statu == 1){
+
+                    layer.msg("删除失败");
+
+                }
+
+            }
+
+        })
+
+    }
+
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

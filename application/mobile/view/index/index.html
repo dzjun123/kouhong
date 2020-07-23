@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/css/weui.css"/>
+    <link rel="stylesheet" href="/static/css/kouhong.css"/>
+    <link rel="stylesheet" href="/static/css/index.css?v=2"/>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</head>
+<style>
+
+</style>
+<body>
+
+<div class="page" id="page">
+    <div class="bg_img"
+         style="background:url('/static/img/bg1.png') no-repeat; background-size:100% auto;-moz-background-size:100% auto">
+        <input type="hidden" id="openid" value="{$user['openid']}">
+        <input type="hidden" id="orderid" value="">
+        <input type="hidden" id="mid" value="{$user}">
+
+        <input type="hidden" id="uid" value="{$user['uniacid']}">
+
+        <div class="row">
+            <div class="kh_h2" style="display:inline-block;    color: #fff; margin-top: 20px;margin-left: 24px; font-size: 22px;">闯过三关，口红寄到家!</div>
+
+            <div class="musicbg">
+                <audio id="music1" controls="controls" autoplay="autoplay" preload src="/static/game/sounds/bg_30s.mp3" loop="true" hidden>
+                </audio>
+                <img src="/static/img/music.png" class="music" id="onmusicTap"/>
+            </div>
+        </div>
+        <div class="rows">
+            <div class="kh_gg">
+                <img src="/static/img/notice.png" class="gg_img"/>
+                <div class="flexColumn">
+                    <text class="kh_text" id="notce_title"></text>
+                    <div class="kh_text kh_texts" id="bindenotice"> 点击查看详请</div>
+                    <input type="hidden" value="" id="notce_info">
+                </div>
+            </div>
+        </div>
+        <div class="kh_banner ">
+            <img class="Kh_bimg" src="/static/img/banner.png"/>
+        </div>
+        <div class="kh_title flexColumn">
+            <div class="kh_h2">闯过三关，口红寄到家!</div>
+            <div class="kh_explain" id="bindexplain">闯关购说明</div>
+            <input type="hidden" value="" id="explain_title">
+            <input type="hidden" value="" id="explain_info">
+        </div>
+        <div class="kh_body page__bd">
+            <div class="item_cell_box" id="gooslist">
+
+            </div>
+        </div>
+    </div>
+    <div class='cardWrap' id="bindgames">
+        <a href="{:url('games/exper',array('platid'=>$user['uniacid']))}&h5=1">
+        <img src="/static/img/experience.png" class="Refresh"/>
+        </a>
+    </div>
+
+    {include file='public/nav'/}
+
+</div>
+<div id="dialogs">
+    <div class="js_dialog" id="showModal3" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog modal-dialog">
+            <div class="weui-dialog_hd"></div>
+            <div class="weui-dialog_bd">
+                <div class="modal-body">
+                    <img src="/static/img/kh_ku.png"/>
+                    <div class="kh_none">余额不足</div>
+                </div>
+            </div>
+
+            <div class="weui-dialog_ft">
+                <div class="kh_btn" id="onConfirm" >去储值</div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="js_dialog" id="showModal2" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog modal-dialog">
+            <div class="weui-dialog_hd kh_none" id="mtitle">title</div>
+            <div class="weui-dialog_bd">
+                <div class="modal-body">
+
+                    <textarea class="kh_sm" id="minfo" style="border:none;width:100%;height:250px;">info</textarea>
+                </div>
+            </div>
+
+            <div class="weui-dialog_ft">
+
+            </div>
+
+        </div>
+    </div>
+    <div class="js_dialog" id="showModal4" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog modal-dialog">
+            <div class="weui-dialog_hd kh_none">天天赢口红收银台</div>
+            <div class="weui-dialog_bd">
+                <div class="modal-body">
+
+                    <div class="modal-kh_box">
+                        <div class="modal_zpic">
+                            当前余额：
+                            <div class="modal_pic">{$user['balance']}元</div>
+                        </div>
+                        <div class="kh_grids" id="kh_grids">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-dialog_ft">
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/layer.js"></script>
+
+<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.config({$jssdkconfig});
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+           title: "{$jssdksharedata['title']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            }
+        });
+        wx.onMenuShareTimeline({
+            title: "{$jssdksharedata['title_line']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            },
+        })
+
+    })
+</script>
+<script>
+    var audio = document.getElementById('music1');
+    $("#onmusicTap").bind("touchstart", function bf() {
+        if(audio !== null) {
+//检测播放是否已暂停.audio.paused 在播放器播放时返回false.
+//alert(audio.paused);
+            if(audio.paused) {
+                audio.play(); //audio.play();// 这个就是播放
+                $("#onmusicTap").attr("src","/static/img/music.png")
+            } else {
+                audio.pause(); // 这个就是暂停
+                $("#onmusicTap").attr("src","/static/img/mute.png")
+            }
+        }
+    })
+</script>
+<script>
+    $(function(){
+        $.ajax({
+            url: "{:url('index/getindex')}",
+            data: {},
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                console.log(66, res);
+                if (res.code == 0) {
+                    $(".Kh_bimg").attr("src",res.data.banner_url);
+                    $("#notce_title").text(res.data.notice_title);
+                    $("#notce_info").val(res.data.notice_info);
+                    $("#explain_title").val(res.data.explain_title);
+                    $("#explain_info").val(res.data.explain_info);
+                }
+            }
+        });
+        $.ajax({
+            url: "{:url('')}",
+            data: {},
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                console.log(11,res);
+                if(res.code==0){
+                    var data=res.data;
+                    var list=""
+                    for(var i=0;i<data.length;i++){
+                        list +='      <div class="goods">\n' +
+                            '                    <div class="kh_goods" onclick="bindgome(this)" data-id="'+data[i].id+'">\n' +
+                            '                        <div>\n' +
+                            '                            <img class="kh_img" src="'+data[i].img_url+'"/>\n' +
+                            '                        </div>\n' +
+                            '                        <div>\n' +
+                            '                            <div class="kh_shoppe">专柜价￥'+data[i].ori_price+'</div>\n' +
+                            '                            <div class="kh_maintitle">'+data[i].brand+'</div>\n' +
+                            '                            <div class="kh_subtitle">'+data[i].title+'</div>\n' +
+                            '                        </div>\n' +
+                            '                        <div>\n' +
+                            '                            <div class="kh_pic">\n' +
+                            '                                '+data[i].price+'元闯关购\n' +
+                            '                            </div>\n' +
+                            '\n' +
+                            '                        </div>\n' +
+                            '                    </div>\n' +
+                            '                </div>';
+                    }
+                    $("#gooslist").html(list);
+                }
+
+            }
+        })
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        var $showModal2 = $('#showModal2'),
+            $showModal3 = $('#showModal3'),
+            $showModal4 = $('#showModal4'),
+            $androidDialog2 = $('#androidDialog2');
+
+        $('#dialogs').on('click', '.js_dialog', function(){
+            $(this).fadeOut(200);
+            $("#page").removeClass("pages");
+        });
+
+        $('#bindenotice').on('click', function(){
+            var title=$("#notce_title").text();
+            var info=$("#notce_info").val();
+            $("#mtitle").text(title);
+            $("#minfo").text(info);
+            $("#page").addClass("pages");
+            $showModal2.fadeIn(200);
+        });
+        $('#bindexplain').on('click', function(){
+            var title=$("#explain_title").val();
+            var info=$("#explain_info").val();
+            $("#mtitle").text(title);
+            $("#minfo").text(info);
+            $("#page").addClass("pages");
+            $showModal2.fadeIn(200);
+        });
+
+        $("#onConfirm").click(function(event){
+            event.stopPropagation();
+            charge();
+            $showModal3.fadeOut(200);
+            $showModal4.fadeIn(200);
+        })
+    });
+
+</script>
+<script>
+    function bindgome(obj){
+        var id=$(obj).attr("data-id");
+        var openid=$("#openid").val();
+        var $showModal3 = $('#showModal3'),
+            $showModal4 = $('#showModal4');
+        console.log(123,id);
+        $.ajax({
+            url: "{:url('member/consume')}",
+            data: {
+                goods_id:id,
+                openid:openid
+            },
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                // console.log(22, res);
+                if (res.code == 0) {
+                    setTimeout(function(){
+                        window.location.href="{:url('games/index',array('platid'=>$user['uniacid']))}&game_id="+ res.data.game_id+"&h5=1"
+                    },500)
+                }else if(res.code == 9006){
+                    $("#page").addClass("pages");
+                    $showModal3.fadeIn(200);
+
+                }
+            }
+    })
+
+    }
+</script>
+<script>
+    function getorder(uid){
+        var id = uid;
+        $.ajax({
+            type: "POST",
+            url: "{:url('pay/getorder')}",
+            cache: false,
+            async: false,
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                console.log(15465);
+                $('#orderid').val(data);
+
+            }
+        });
+    }
+    function charge(){
+
+        $.ajax({
+            url: "{:url('index/getrecharge')}",
+            data: {
+
+            },
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                console.log(22,res);
+                if(res.code==0){
+                    var data=res.data;
+                    var list=""
+                    for(var i=0;i<data.length;i++){
+
+                        list +='  <div class="kh_grids-item kh_pics"  data-pic="'+data[i].price+'" >\n' +
+                            '                                <div class="kh_grids_pic">'+data[i].price+'\n' +
+                            '                                    <text>元</text>\n' +
+                            '                                </div>\n' +
+                            '\n' +
+                            '                            </div>';
+                    }
+                    $("#kh_grids").html(list);
+
+                    $('#kh_grids').on('click', '.kh_pics', function(event){
+                        event.stopPropagation();
+                        var price = $(this).attr("data-pic");
+
+                        var uid = $('#uid').val();
+                        getorder(uid);
+                        var openid = $('#openid').val();
+                        var id = $('#tims_id').val();
+                        var orderid = $('#orderid').val();
+                        $.ajax({
+                            url: "{:url('pay/pay')}",
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                total_fee: price,
+                                uniacid: uid,
+                                openid: openid,
+                                orderid: orderid,
+                            },
+                            success: function (data) {
+                                console.log(132,data)
+                                // return;
+
+                                if(data.code!=0){
+                                    layer.msg(data.message);
+                                }
+                                if (typeof WeixinJSBridge == "undefined") {
+                                    if (document.addEventListener) {
+                                        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                                    } else if (document.attachEvent) {
+                                        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                    }
+                                } else {
+                                    onBridgeReady(data);
+                                }
+                            }
+                        })
+                    })
+                }
+
+            }
+        })
+    }
+
+    function onBridgeReady(sdata) {
+
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', sdata,
+            function (res) {
+                // console.log(111,res);
+                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    paysuccess();
+                }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+            }
+        );
+    };
+    function paysuccess() {
+        var orderid=$('#orderid').val();
+        $.ajax({
+            type: "POST",
+            url: "{:url('pay/r_payover')}",
+            cache: false,
+            dataType: "json",
+            async: false,
+            data: {
+                orderid:orderid,
+                // orderid:$('#orderid').val(),
+            },
+            success: function (data) {
+                // consoel.log(132,data);
+
+                if (data.code == 0) {
+                    layer.msg(data.message);
+                    $("#page").removeClass("pages");
+                    $("#showModal4").fadeOut(200);
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+
+
+        });
+    }
+</script>
+<script>
+
+
+
+</script>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/css/weui.css" />
+    <link rel="stylesheet" href="/static/css/kouhong.css"/>
+    <link rel="stylesheet" href="/static/css/member.css"/>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<style>
+    .kh_grid_num {
+        display: inline-block;
+        flex: 1;
+        padding: 10px;
+        line-height: 33px;
+        color: rgb(253, 55, 131);
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+</style>
+<body>
+<!--we7/pages/user/user.wxml-->
+<div class="page " id="page">
+    <div class="bg_img" style="background:url('/static/img/bg22.png') no-repeat; background-size:100% auto;-moz-background-size:100% auto">
+        <div class="header">
+            <div class="kh_user">
+                <img id="header_url" src="{$user['header_url']}"/>
+            </div>
+            <div class="kh_title">{$user['nickname']}</div>
+        </div>
+        <div class="kh_box">
+            <div class="kh_box_item">
+                <div class="kh_grid line" id="my_kh">
+                    <div class="kh_my">已提现的佣金</div>
+                    <div class="kh_grid_box">
+
+                        <div class="kh_grid_num" id="kh_num">{$user['y_bonus']}<text>元</text></div>
+                    </div>
+
+                </div>
+
+                <div class="kh_grid">
+                    <div class="kh_my">未提现的佣金</div>
+                    <div class="kh_grid_box">
+                        <div class="kh_grid_num" id="kh_num">{$user['bonus']}<text>元</text></div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 菜单 -->
+    <div class="weui-grids">
+        <a href="{:url('marke/getmoney',array('platid'=>$user['uniacid']))}" class="weui-grid">
+            <div class="weui-grid__icon">
+                <img src="/static/img/jb.png" alt="">
+            </div>
+            <p class="weui-grid__label">提现</p>
+        </a>
+        <a href="{:url('marke/getmoneylist',array('platid'=>$user['uniacid']))}" class="weui-grid">
+            <div class="weui-grid__icon">
+                <img src="/static/img/mx.png" alt="">
+            </div>
+            <p class="weui-grid__label">提现明细</p>
+        </a>
+        <a href="{:url('marke/shareuserlist',array('platid'=>$user['uniacid']))}" class="weui-grid">
+            <div class="weui-grid__icon">
+                <img src="/static/img/rt.png" alt="">
+            </div>
+            <p class="weui-grid__label">我推荐的人</p>
+        </a>
+        <a href="{:url('marke/share',array('platid'=>$user['uniacid']))}" class="weui-grid">
+            <div class="weui-grid__icon">
+                <img src="/static/img/ecode.png" alt="">
+            </div>
+            <p class="weui-grid__label">推广二维码</p>
+        </a>
+<!--        <a href="{:url('marke/shareqrcode',array('platid'=>$user['uniacid']))}"  class="weui-grid" >
+            <div class="weui-grid__icon">
+                <img src="/static/img/lj.png" alt="">
+            </div>
+            <p class="weui-grid__label">独立二维码</p>
+        </a>-->
+    </div>
+<!--    <p style="    font-size: 13px;
+    color: #d87272;">用户可享受推广30%充值收益，赚不停，佣金提现以及更多服务请关注公众号私信！！！！</p>-->
+    {include file='public/nav'/}
+    <!--<div style="text-align: center;margin-top:20px;"><span>QQ客服群号:933020024</span></div>-->
+</div>
+<div id="dialogs">
+    <div class="js_dialog" id="showModal4" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog modal-dialog">
+            <div class="weui-dialog_hd kh_none">抓中的口红</div>
+            <div class="weui-dialog_bd">
+                <div class="modal-body">
+
+                    <div class="modal-kh_box" >
+                        <div class="kh_grids" id="rougelist">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-dialog_ft">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/layer.js"></script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script src="/static/js/clipboard.min.js"></script>
+<script>
+    var clipboard =  new Clipboard('.copytext');
+
+    clipboard.on('success', function (e) {
+        layer.msg('复制成功');
+    });
+
+    clipboard.on('error', function (e) {
+        layer.msg('复制失败');
+    });
+</script>
+<script>
+    $(function() {
+        $.ajax({
+            url: "{:url('')}",
+            data: {},
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                console.log(66, res);
+                if (res.code == 0) {
+                    $("#kh_pic").text(res.data.balance);
+                    $("#kh_num").text(res.data.rouge);
+                    $("#header_url").attr("src",res.data.header_url);
+
+                }
+            }
+        });
+    })
+</script>
+<script type="text/javascript">
+
+</script>
+<script>
+    wx.config({$jssdkconfig});
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+           title: "{$jssdksharedata['title']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            }
+        });
+        wx.onMenuShareTimeline({
+            title: "{$jssdksharedata['title_line']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            },
+        })
+
+    })
+</script>
+</html>

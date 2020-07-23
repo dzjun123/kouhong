@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 54.8px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/game/css/game.css">
+    <script>
+        var url="/static/game/"
+    </script>
+    <script type="text/javascript" src="/static/game/js/bodymovin.js"></script>
+    <script type="text/javascript" src="/static/game/js/jweixin-1.3.2.js"></script>
+    <script typet="text/javascript" src="/static/game/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/game/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/static/game/js/JicemoonMobileTouch.js"></script>
+    <script type="text/javascript" src="/static/game/js/HardestGame1.js?v=6"></script>
+    <script type="text/javascript" src="/static/game/js/index1.js?v=2"></script>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+<audio id="back_music" preload="" src="/static/game/sounds/bg_audio.mp3" loop="true"></audio>
+<audio id="split_audio" preload="" src="/static/game/sounds/split_audio.mp3"></audio>
+<audio id="collision_audio" preload="" src="/static/game/sounds/collision_audio.mp3"></audio>
+<audio id="Countdown_10s_audio" preload="" src="/static/game/sounds/Countdown_10s_audio.mp3"></audio>
+<audio id="gameFail_audio" preload="" src="/static/game/sounds/gameFail_audio.mp3"></audio>
+<audio id="gameSuccess_audio" preload="" src="/static/game/sounds/gameSuccess_audio.mp3"></audio>
+<audio id="insert_audio" preload="" src="/static/game/sounds/insert_audio.mp3"></audio>
+<audio id="success_audio" preload="" src="/static/game/sounds/success_audio.mp3"></audio>
+
+<div class="levelSwitchBox" id="levelSwitchBox" >
+    <img id="levelSwitchBoxMain" class="levelSwitchBoxMain" src="/static/game/img/level_1_mains.jpg">
+</div>
+<div class="PopupBox" id="gameOverBox" style="display: none;">
+    <!--<div id="gameOverClose" class="close"><img src="/static/game/img/close_btn.jpg"></div>-->
+    <!--<div class="gameOverIcon"></div>-->
+    <div id="gameOverBoxTitle">闯关失败</div>
+    <div class="PopupBoxBtn" id="gameOverBoxBtn">重新闯关</div>
+</div>
+<div class="PopupBox" id="gameSuccessBox" style="display: none;">
+    <!--<div id="gameSuccessClose" class="close"><img src="/static/game/img/close_btn.jpg"></div>-->
+    <div id="gameSuccessBoxText">体验结束</div>
+    <div class="PopupBoxBtn" id="gameSuccessBoxBtn">马上赢口红</div>
+</div>
+
+<div class="layoutRoot" id="app">
+    <div class="game" id="game" style="width: 411px; height: 731px;">
+        <div class="account">
+            <!--<img class="avatar" src="https://h5.lipstick.lemiao.xyz/play/trail/?h5=1&amp;unionid=orLqYwz20BqFmMvAjg97kcEykaTo">-->
+            <span></span>
+        </div>
+        <div class="bulletsNumBox">
+            <img class="bulletsNum" id="bulletsNum1" src="/static/game/img/6.png">
+            <!--<img class="bulletsNum" id="bulletsNum2" src="https://h5.lipstick.lemiao.xyz/play/trail/?h5=1&amp;unionid=orLqYwz20BqFmMvAjg97kcEykaTo" style="display: none;">-->
+        </div>
+        <canvas style="position: relative;z-index: 3" id="gameStage" width="411" height="731"></canvas>
+        <div id="bm" style="width: 100%; height: 100%;position: fixed;background-color: rgba(0,0,0,0);top: 5.3rem; transform: translate(-5%,-1%); z-index: 2">
+        </div>
+        <div class="tips">
+            <p id="currentLevel">当前关数: <span>1</span></p>
+            <p id="gameTip"></p>
+        </div>
+
+        <div class="levelbox" id="levelbox">
+            <div class="level"><img id="level_1" src="/static/game/img/level_icon_1_active.png"></div>
+            <div class="level"><img id="level_2" src="/static/game/img/level_icon_2.png"></div>
+            <div class="level"><img id="level_3" src="/static/game/img/level_3.png"></div>
+        </div>
+        <div id="timebox">18</div>
+    </div>
+</div>
+<script>
+    // document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+    //     // 通过下面这个API隐藏右上角按钮
+    //     WeixinJSBridge.call('hideOptionMenu');
+    // });
+    $(function(){
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            // 通过下面这个API隐藏右上角按钮
+            wx.hideMenuItems({
+                menuList: ["menuItem:share:timeline", "menuItem:copyUrl", "menuItem:share:appMessage", "menuItem:share:qq", "menuItem:share:weiboApp", "menuItem:favorite", "menuItem:share:facebook", "menuItem:share:QZone", "menuItem:editTag", "menuItem:delete", "menuItem:copyUrl", "menuItem:originPage", "menuItem:readMode", "menuItem:openWithQQBrowser", "menuItem:openWithSafari", "menuItem:share:email", "menuItem:share:brand"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮
+            });
+        });
+
+    })
+</script>
+<script type="text/javascript">
+    var loadedMusic = false;
+    var h5Host = "https://wopen.wunengkeji.com/";
+    document.body.addEventListener('touchmove', function (e) {
+        e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
+    }, {passive: false});
+    var baseUrl = function GetRequest() {
+        var url = location.search;  //获取url中"?"符后的字符串
+        console.log(456,url);
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            url = url.split("?")[1];
+            strs = url.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = (strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+
+    }
+    var jsonParamsAlias = baseUrl();
+    console.log(132,jsonParamsAlias);
+    // var jsonParams = {
+    //     "game_id" : jsonParamsAlias.gid,
+    //     "game_pay" : jsonParamsAlias.pay,
+    //     "product_id" : jsonParamsAlias.pid,
+    //     "randomNum" : jsonParamsAlias.rand,
+    //     "forecast_result": jsonParamsAlias.res,
+    //     "user_id" : jsonParamsAlias.uid
+    // }
+    var jsonParams = {
+        "game_id" : "1",
+        "game_pay" : "132",
+        "product_id" : "465",
+        "randomNum" : "4541",
+        "forecast_result": "1321",
+        "user_id" : "132"
+    }
+    if (jsonParamsAlias.slient) {
+        $('audio').prop('muted', true);
+    }
+    if (jsonParamsAlias.h5 && jsonParamsAlias.h5 == "1") {
+        window.isH5 = true;
+    }
+    console.log(jsonParams)
+    var cookieDelTime = new Date(Math.floor(new Date(new Date().getTime()+150000)));
+    $.cookie('game_cookie', null);
+    $.cookie('game_cookie', JSON.stringify(jsonParams), { expires: cookieDelTime });
+    console.log($.cookie('game_cookie'));
+    var anim = bodymovin.loadAnimation({
+        wrapper: document.querySelector('#bm'),
+        animType: 'svg',
+        loop: false,
+        autoplay: false,
+        prerender: true,
+        path: '/static/game/js/data.json'
+    });
+    function play(){
+        anim.goToAndStop(0, true)
+        anim.play()
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        function audioAutoPlay() {
+            var audio = document.getElementById('back_music');
+            audio.play();
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                audio.play();
+            }, false);
+        }
+        audioAutoPlay();
+    });
+
+    document.addEventListener('visibilitychange', function(e) {
+        function audioStop() {
+            var audio = document.getElementById('back_music');
+            document.hidden ? audio.pause() : audio.play();
+            document.addEventListener("WeixinJSBridgeReady", function () {
+                document.hidden ? audio.pause() : audio.play();
+            }, false);
+        }
+        audioStop();
+    });
+
+
+    /*document.getElementById("return").onclick=function(){wx.miniProgram.navigateTo({url: '/pages/index/main'})};*/
+</script>
+
+
+</body></html>

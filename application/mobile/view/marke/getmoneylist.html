@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/css/weui.css" />
+    <link rel="stylesheet" href="/static/css/kouhong.css"/>
+    <link rel="stylesheet" href="/static/css/dropload.css" />
+    <link rel="stylesheet" href="/static/css/orderlist.css" />
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<style>
+    .title{
+        text-align:center;
+        color:#FE5A99;
+    }
+    .kh_tcode{
+        display:inline-block;
+        width:30%;
+    }
+    .weui-cell__hd img {
+        width: 60px;
+        height: 60px;
+    }
+    .kh_user{
+        text-align:center;
+
+        display:inline-block;
+        width:33%;
+        color:#0D0D0D;
+        font-size:13px;
+        font-weight:300;
+    }
+    .zanwu {
+        margin: 28px 55px;
+        font-size: 12px;
+        color: #9B9B9B;
+        text-align: center;
+    }
+
+    .wu {
+         padding-top: 10px;
+        width: 280px;
+        height: 99px;
+        margin-bottom: 10px;
+    }
+</style>
+<body>
+<!--we7/pages/orderlist/orderlist.wxml-->
+<div class="page_article" style="background:#ffffff;padding:10px 15px;padding-bottom:70px;">
+
+    <div class="title">
+        <div class="weui-cell__hd kh_tcode">提现金额</div>
+        <div class="weui-cell__hd kh_tcode">提现状态</div>
+        <div class="weui-cell__hd kh_tcode">提现时间</div>
+
+    </div>
+
+
+    <div class="temp_article_list" id="orderlists">
+        <div id="kin" data-page="">
+            <a href="'+url+'&orderid='+data[i].orderid+'" class="article_list_item " >
+
+            </a>
+        </div>
+
+        <div class="clear"></div>
+
+    </div>
+</div>
+<div class="selected2" id="zanwu" style="display:none;">
+    <div class="zanwu">
+        <img src="/static/img/wu.png"class="wu"/>
+        <div>暂无数据</div>
+    </div>
+</div>
+<div class="body-div">
+    {include file='public/nav'/}
+
+</div>
+
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/dropload.js?v=1"></script>
+<!--<script src="__STATIC_URL__/static/js/dropload1.js"></script>-->
+<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.config({$jssdkconfig});
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+            title: "{$jssdksharedata['title']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            }
+        });
+        wx.onMenuShareTimeline({
+             title: "{$jssdksharedata['title_line']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            },
+        })
+
+    })
+</script>
+<script type="text/javascript">
+
+</script>
+<script>
+    $(document).ready(function(){
+        //加载分页
+        load();
+    });
+    function load() {
+        console.log(132);
+        var num = 5;
+        var page = 1;
+
+        var openid=$("#id").attr("data-openid");
+
+        var dropload = $('#orderlists').dropload({
+            scrollArea:window,
+
+            loadDownFn:function(me){
+
+                $.ajax({
+                    url: "{:url('')}",
+                    type: 'post',
+                    dataType: 'json',
+                    data:{
+                        openid:openid,
+                        page:page
+                    },
+                    success: function (res) {
+                        console.log(99,res)
+                        var pagenum=parseInt(res.data.page_num);
+                        var pages=parseInt(res.page);
+
+                        var result = '';
+                        var data=res.data;
+                        if(data==""&& pagenum ==0){
+                            $("#zanwu").attr("style","display:block")
+                        }
+                        if(data==""){
+                            me.lock();
+                            // 无数据
+                            me.noData();
+                            me.resetload();
+                        }
+                        var html="";
+                        var html3 ="";
+
+                        if(res.code==9001){
+                            console.log(132);
+                            me.lock();
+                            // 无数据
+                            me.noData();
+                            me.resetload();
+                            $("#zanwu").attr("style","display:block")
+
+                            // setTimeout(function(){
+                            //     window.location.href ="{:url('notime/index',array('platid'=>$user['uniacid']))}";
+                            // },500)
+
+                            $(".title").attr("style","display:none");
+                            if(page ==1){
+                                $(".dropload-down").css("display","none");//没有更多数据的文字
+                            }
+
+                        }else{
+                            var length=data.length;
+                            $(".dropload-load").show();
+                            page++;
+                            for(var i=0;i<length;i++){
+
+                                result +='<div class="weui-cell weui-cell_access">\n' +
+                                    '                    <div class="weui-cell__hd kh_user">  '+data[i].price+' </div>\n' +
+                                    '\n' +
+                                    '                    <div class="weui-cell__hd kh_user">'+data[i].status+'</div>\n' +
+                                    '                    <div class="weui-cell__hd kh_user">'+data[i].create_time+'</div>\n' +
+                                    '\n' +
+                                    '\n' +
+                                    '\n' +
+                                    '                </div>';
+                                if(length < 5 &&  i ==(length-1) && pages == pagenum){
+                                    // 锁定//表示一页未满已经没有数据
+                                    me.lock();
+                                    // 无数据
+                                    me.noData();
+                                    break;
+                                }
+                            }
+                            $("#kin").append(result)
+                            // me.noData();
+                            //me.unlock();
+                            me.resetload();
+                        };
+                    },
+                    error: function (xhr, type) {
+                        // 即使加载出错，也得重置
+                        me.resetload();
+                        me.noData();
+                        $("#zanwu").attr("style","display:block")
+                        $(".title").attr("style","display:none");
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+
+</html>

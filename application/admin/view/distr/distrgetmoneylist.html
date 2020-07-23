@@ -1,0 +1,219 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		分销管理
+		<span class="c-gray en">&gt;</span>
+		提现管理
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<div class="text-c">
+				日期范围：
+				<input type="text" onfocus="WdatePicker()" id="starttime" class="input-text Wdate" style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker()" id="endtime" class="input-text Wdate" style="width:120px;">
+				<input type="text" name="" id="nickname" placeholder="提现人用户名" style="width:250px" class="input-text">
+				<button name="search" id="search" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+			</div>
+			<div class="cl pd-5 bg-1 bk-gray mt-20">
+
+			</div>
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg table-hover table-sort">
+
+				</table>
+			</div>
+		</article>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script>
+    $(document).ready(function(){
+        //初始化博客分类树
+        //异步查询数据
+        table = $('.table-sort').dataTable({
+            "bStateSave": false,//状态保存
+            "bServerSide" : true, //是否启动服务器端数据导入
+            "bFilter": false, //去掉默认自带的搜索框
+            "aLengthMenu" : [10,20,40, 60, 100],
+            "sAjaxSource" : "{:url('distr/distrgetmoneylist')}",
+            "fnServerParams" : function(aoData) {
+                aoData.push({
+                    "name" : "criteria",
+                    "value" : {
+
+                        "phone" : $("#phone").val(),
+                        "nickname" : $("#nickname").val(),
+                        "endtime" : $("#endtime").val(),
+                        "starttime" : $("#starttime").val(),
+                    }
+                });
+            },
+            "aoColumns" : [{
+                "mData" : "nickname",
+                "sTitle" : "提现人",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "price",
+                "sTitle" : "提现金额",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c",
+
+            },{
+                "mData" : "statu",
+                "sTitle" : "状态",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c",
+
+            } ,{
+                "mData" : "create_time",
+                "sTitle" : "提现时间",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "id",
+                "sTitle" : "操作",
+                "sDefaultContent" : "",
+                "sClass" : "text-c",
+
+            }],
+
+            "columnDefs": [{ "orderable": false, "targets": 1 }],
+            "fnServerData" : function(sSource, aoData, fnCallback) {
+
+                $.ajax({
+                    type : 'POST',
+                    url : sSource,
+                    async : false,
+                    data : {
+                        "aoData" : JSON.stringify(aoData)
+                    },
+                    success : fnCallback,
+
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status + "," + textStatus);
+                    }
+                });
+            },
+            "fnCallback" : function(data, aData, iDisplayIndex) {
+                console.log(22,data);
+            },
+
+            "fnRowCallback" : function(nRow, aData, iDisplayIndex) {
+                console.log(123,nRow,aData);
+                // var imgVal = "<a href='"+aData.image_url+"' data-lightbox='gallery' data-title='"+aData.btitle+"'><img width='210' class='picture-thumb' src='"+aData.image_url+"'/></a>";
+                // $('td:eq(3)', nRow).html(imgVal);
+				if(aData.is_statu==1){
+                    var cstr = "<a title='编辑' href='javascript:void(0);' onclick='member_edit("+aData.id+")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6df;</i></a>";
+
+				}else {
+                    var cstr = "<a title='编辑' href='javascript:void(0);'  class='ml-5' style='text-decoration:none'>已处理</a>";
+
+                }
+
+                    $('td:eq(4)', nRow).html(cstr);
+
+                return nRow;
+            }
+        });
+        //注册查询按钮事件
+        $("#search").bind("click", function () {
+            //做一些js的格式验证
+            table.fnDraw();
+        });
+
+    });
+
+</script>
+<script>
+    function member_edit(uid){
+        var title = "操作";
+        var url = "{:url('distr/distrgetmoney')}?id="+uid;
+        var index = layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['50%', '50%'],
+            content: url
+        });
+        // layer.full(index);
+        // layer_show(title,url,w,h);
+    }
+</script>
+<script type="text/javascript">
+
+    function del(id) {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "{:url('goods/goodsdel')}",
+
+            cache: false,
+
+            dataType:"json",
+
+            data: {
+
+                id:id,
+
+            },		//表单ID
+
+            success: function(data) {
+
+                console.log(data.statu);
+
+                if(data.statu == 0){
+
+                    layer.msg("删除成功");
+
+                    setTimeout(function () {
+
+                        window.location.reload();
+
+                    },500)
+
+                }
+
+                if(data.statu == 1){
+
+                    layer.msg("删除失败");
+
+                }
+
+            }
+
+        })
+
+    }
+
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

@@ -1,0 +1,228 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title>系统设置</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<style>
+	.input-file {
+		width: 100px;
+		height: 32px;
+		position: absolute;
+		left: 220px;
+		top: 0;
+		cursor: pointer;
+		z-index: 1;
+		font-size: 30em;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+</style>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		商品管理
+		<span class="c-gray en">&gt;</span>
+		商品管理
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<form action="" method="post" id="goods" class="form form-horizontal">
+			<input type="hidden" name="id" value="{$info['id']}">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">公众号名称：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" class="input-text" name="title" value="{$info['title']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">appid：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" class="input-text" name="appid" value="{$info['appid']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">appsecret：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" name="appsecret" class="input-text" value="{$info['appsecret']}">
+					</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">token：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" name="token" class="input-text" value="{$info['token']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">商户号：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" name="mch_id"class="input-text" value="{$info['mch_id']}">
+					</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">是否开启自动发放佣金：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<span class="select-box inline">
+					<select name="is_get_cash" class="select" id="is_get_cash">
+					<option {if condition="$info['is_get_cash'] eq '0'"} selected {/if} value="0" >手动</option>
+					<option {if condition="$info['is_get_cash'] eq '1'"} selected {/if} value="1" >自动</option>
+					</select>
+					</span>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">佣金发放方式：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<span class="select-box inline">
+					<select name="is_put_mode" class="select" id="is_put_mode">
+					<option {if condition="$info['is_put_mode'] eq '0'"} selected {/if} value="0" >红包</option>
+						<option {if condition="$info['is_put_mode'] eq '1'"} selected {/if} value="1" >企业付款</option>
+					</select>
+					</span>
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">上传证书cert：</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input class="input-text upload-url" type="text" name="" id="file-val-file0" readonly style="width:200px" value="{$info['apiclient_cert']}">
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传
+
+					</a>
+					<input type="file" id="val-file0" name="file" class="input-file" onchange="ajaxSubmit('val-file0')"/>
+
+					<input type="hidden" class="file-val-file0" name="apiclient_cert"  value="{$info['apiclient_cert']}">
+
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">上传证书key：</label>
+				<div class="formControls col-xs-5 col-sm-4">
+					<input class="input-text upload-url" type="text" name="" id="file-val-file1" readonly style="width:200px" value="{$info['apiclient_key']}">
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 上传
+
+					</a>
+					<input type="file" id="val-file1" name="file" class="input-file" onchange="ajaxSubmit('val-file1')">
+					<input type="hidden" class="file-val-file1" name="apiclient_key" value="{$info['apiclient_key']}">
+
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">密钥：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" name="partnerkey" class="input-text" value="{$info['partnerkey']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">发货模板消息：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" id="tpl_msg_id_putgoods" name="tpl_msg_id_putgoods" class="input-text" style="width: 75%" value="{$info['tpl_msg_id_putgoods']}">
+					<button class="btn btn-primary radius" style="float: right" type="button" id="addtpl">设置</button>
+				</div>
+			</div>
+
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">祝福语：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" id="wishing" name="wishing" class="input-text" style="width: 75%" value="{$info['wishing']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button id="addgoods" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+
+    function ajaxSubmit(typed) {
+        //console.log(typed,zlids);
+        var formData = new FormData();
+        formData.append('file', $('#' + typed)[0].files[0]);
+        var title = $('#' + typed)[0].files[0].name;
+        var fileName = title;
+        var index = fileName.indexOf("."); //得到"."在第几位
+        var lxext = fileName.substring(index); //截断"."之前的，得到后缀
+        $.ajax({
+            url: "{:url('uploads/uploadpem')}",
+            type: 'POST',
+            data: formData,
+            dataType: 'JSON',
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false,
+            success: function (res) {
+                layer.msg("上传成功");
+                $("#file-"+typed).val(res.data);
+                $(".file-"+typed).val(res.data);
+            }, fail: function (res) {
+                layer.msg("上传失败")
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    $('#addtpl').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "{:url('sendmsg/gettplmsg')}",
+            cache: false,
+            dataType:"json",
+            data: {},		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    $("#tpl_msg_id_putgoods").val(data.template_id);
+                    layer.msg("设置成功");
+                } else if(data.statu == 1){
+                    layer.msg("设置失败");
+                }else{
+                    layer.msg(data.message);
+				}
+            }
+        })
+    })
+</script>
+<script type="text/javascript">
+    $('#addgoods').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            cache: false,
+            dataType:"json",
+            data: $("#goods").serializeArray(),		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    alert("修改成功");
+                    // setTimeout(function () {
+                    //     window.location.href=data.url;
+                    // },500)
+                }
+                if(data.statu == 1){
+                    alert("修改失败");
+                }
+            }
+        })
+    })
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

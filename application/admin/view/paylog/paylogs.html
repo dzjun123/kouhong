@@ -1,0 +1,213 @@
+{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+        <span class="c-gray en">&gt;</span>
+        订单管理
+        <span class="c-gray en">&gt;</span>
+        兑换订单
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+    </nav>
+    <div class="Hui-article">
+        <article class="cl pd-20">
+            <div class="text-c">
+				<span class="select-box inline">
+				<input type="text" name="" style="width:250px" class="input-text"/>
+				<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+				</span>
+            </div>
+            <div class="cl pd-5 bg-1 bk-gray mt-20">
+            </div>
+            <div class="mt-20">
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+
+                </table>
+            </div>
+        </article>
+    </div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script>
+
+    $(document).ready(function(){
+        //初始化博客分类树
+
+        //异步查询数据
+        table = $('.table-sort').dataTable({
+            "bStateSave": false,//状态保存
+            "bServerSide" : true, //是否启动服务器端数据导入
+            "bFilter": false, //去掉默认自带的搜索框
+            "aLengthMenu" : [5,10,20, 40, 60],
+            "sAjaxSource" : "{:url('paylog/payloglist')}",
+            "fnServerParams" : function(aoData) {
+                aoData.push({
+                    "name" : "criteria",
+                    "value" : {
+                        "category_id" : $("#category_id").val(),
+                        "releaseTimeBegin" : $("#releaseTimeBegin").val(),
+                        "releaseTimeEnd" : $("#releaseTimeEnd").val(),
+                        "btitle" : $("#btitle").val(),
+                        "accurateFlg" : $("#accurateFlg").prop("checked") ? "1" : ""
+                    }
+                });
+            },
+            "aoColumns" : [{
+                "mData" : "id",
+                "bSortable" : false
+            },{
+                "mData" : "id",
+                "sTitle" : "ID",
+                "sWidth": "40px",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "title",
+                "sTitle" : "文章标题",
+                "sWidth": "240px",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "cate.val",
+                "sTitle" : "文章分类",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "sort",
+                "sTitle" : "排序",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            }
+                ,{
+                    "mData" : "adduser",
+                    "sTitle" : "添加人",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },{
+                    "mData" : "addtime",//对应的属性名
+                    // "bSortable" : false,//是否需要排序，默认是true
+                    "sTitle" : "添加时间", //列名
+                    "sDefaultContent" : "",//默认值
+                    "sClass" : "text-c"//相当于css中的text-align，有text-l、text-c、text-r（左中右）这三个选择
+                },{
+                    "mData" : "",
+                    "bSortable" : false,
+                    "sTitle" : "操作",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                }],
+            "aoColumnDefs":[{
+                "sClass": "text-c",
+                "mRender" : function(data,type,full) {
+                    return '<input type="checkbox" id="chkId_' + data
+                        + '" name="chkId" value="' + data + '"  style="border:1px solid red"/>';
+                },
+                "bSortable": false,
+                "aTargets": [0]
+            }],
+            "columnDefs": [{ "orderable": false, "targets": 1 }],
+            "fnServerData" : function(sSource, aoData, fnCallback) {
+
+                $.ajax({
+                    type : 'POST',
+                    url : sSource,
+                    async : false,
+                    data : {
+                        "aoData" : JSON.stringify(aoData)
+                    },
+                    success : fnCallback,
+
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status + "," + textStatus);
+                    }
+                });
+            },
+            "fnRowCallback" : function(nRow, aData, iDisplayIndex) {
+
+                // var imgVal = "<a href='"+aData.image_url+"' data-lightbox='gallery' data-title='"+aData.btitle+"'><img width='210' class='picture-thumb' src='"+aData.image_url+"'/></a>";
+                // $('td:eq(3)', nRow).html(imgVal);
+
+                var cstr = "<a title='编辑' href='javascript:void(0);' onclick='member_edit("+aData.id+")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6df;</i></a>" +
+                    "<a title='删除' href='javascript:void(0);' onclick='member_del(this,"+ aData.id +")' class='ml-5' style='text-decoration:none'><i class='Hui-iconfont'>&#xe6e2;</i></a>";
+
+                $('td:eq(7)', nRow).html(cstr);
+
+                return nRow;
+            }
+        });
+        //注册查询按钮事件
+        $("#search").bind("click", function () {
+            //做一些js的格式验证
+            table.fnDraw();
+        });
+
+    });
+</script>
+<script type="text/javascript">
+
+    function del(id) {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "{:url('goods/goodsdel')}",
+
+            cache: false,
+
+            dataType:"json",
+
+            data: {
+
+                id:id,
+
+            },		//表单ID
+
+            success: function(data) {
+
+                console.log(data.statu);
+
+                if(data.statu == 0){
+
+                    alert("删除成功");
+
+                    setTimeout(function () {
+
+                        window.location.reload();
+
+                    },500)
+
+                }
+
+                if(data.statu == 1){
+
+                    alert("删除失败");
+
+                }
+
+            }
+
+        })
+
+    }
+
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

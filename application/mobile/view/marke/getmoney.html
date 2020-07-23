@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/css/weui.css" />
+
+    <link rel="stylesheet" href="/static/css/login.css" />
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<style>
+    body{
+        color: #616161;
+        font-size:15px;
+    }
+    .footer{
+        margin-top:25px;
+        text-align:center;
+    }
+    .kh_btn {
+        width: 85%;
+        color: #fff;
+        background: #FF1E82;
+        line-height: 35px;
+        font-size: 14px;
+        border: none;
+        border-radius:5px;
+    }
+    .btn{
+        margin-top:15px;
+        width: 85%;
+        color: #fff;
+        background: #b3b3b3;
+        line-height: 35px;
+        font-size: 14px;
+        border: none;
+        border-radius:5px;
+    }
+</style>
+<body>
+<div class='indexbg' data-uid="{$user['uniacid']}">
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">提现金额</label></div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" name="tx_pic" id="tx_pic" pattern="[0-9]*" placeholder="请输入整数金额"/>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <input type="hidden" id="openid" value="{$user['openid']}">
+        <input type="hidden" id="uid" value="{$user['id']}">
+
+        <button class=" click_button kh_btn">申请提现</button>
+        <button class=" click_button btn">取消</button>
+        <div><br/></div>
+<!--        <div> <span style="color:red;">提现申请立即到账请联系微信客服为你立即处理</span></div>
+        <div>
+           
+            <img style="width:80%" src="/qrcode/kefu.jpg"/>
+        </div>-->
+        
+    </div>
+</div>
+
+
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="/static/js/layer.js"></script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.config({$jssdkconfig});
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+            title: "{$jssdksharedata['title']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            }
+        });
+        wx.onMenuShareTimeline({
+           title: "{$jssdksharedata['title_line']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            },
+        })
+
+    })
+</script>
+<script type="text/javascript">
+  $(".kh_btn").click(function(){
+      var openid=$('#openid').val();
+      var uid=$('#uid').val();
+      var pic=parseFloat($('#tx_pic').val());
+      console.log(pic<1);
+      if(pic==""){
+          layer.msg("提现金额不能为空");
+          return false
+      }
+
+          $.ajax({
+              url: "{:url('')}",
+              data: {
+                  openid:openid,
+                  user_id:uid,
+                  price:pic
+              },
+              dataType: "json",
+              type: "post",
+              success: function (res) {
+                  console.log(66, res);
+                  if (res.code == 0) {
+                      layer.msg(res.message);
+                          setTimeout(function(){
+                                window.location.href="{:url('marke/index',array('platid'=>$user['uniacid']))}";
+                            },500)
+                  }else{
+                      layer.msg(res.message);
+                  }
+              }
+          });
+
+  })
+    $(".btn").click(function(){
+        setTimeout(function(){
+            window.location.href="{:url('marke/index',array('platid'=>$user['uniacid']))}";
+        },500)
+    });
+</script>
+</html>

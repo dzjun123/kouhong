@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>女神赢口红</title>
+    <link rel="stylesheet" href="/static/css/weui.css" />
+    <link rel="stylesheet" href="/static/css/kouhong.css"/>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<style>
+    .temp_item_article {
+        padding: 20px 0;
+    }
+    .temp_article_head{
+        text-align: center;
+        font-weight: 400;
+    }
+
+    .temp_article_bot{
+        text-align: center;
+    }
+
+    .weui-cell__bd{
+        padding:20px;
+    }
+    .article_list_l{
+        width: 200px;
+        height: 180px;
+        overflow: hidden;
+        max-height: 212px;
+        align-items: center;
+        display: flex;
+    }
+    .weui-cell__hd image{
+        width: 130px;
+        height:130px;
+    }
+    .article_list_r{
+        padding-left: 20px;
+        position: relative;
+    }
+
+    .article_list_item{
+        padding: 30px 0;
+        position: relative;
+    }
+    .wu{
+        width:600px;
+        height:200px;
+        padding-top:158px;
+        text-align:center;
+        margin:0 auto;
+        color:#aaa;
+    }
+    .slide-image{
+        height:100%;
+        width:100%;
+    }
+    .kh_tcode{
+        font-size:32px;
+        font-weight:700;
+    }
+    .kh_code{
+        font-size:30px;
+        font-weight:400;
+        padding:0;
+    }
+    .kh_state{
+        font-size:32px;
+        font-weight:600;
+    }
+    .weui-cell:before {
+
+        border-bottom: none;
+    }
+    .weui-cell{
+        padding:20px 20px;
+    }
+    .weui-cell_access .weui-cell__ft:after {
+        right: 10px;
+    }
+    .kh_list_bd{
+        padding:10px 20px;
+    }
+    .kh_list_title{
+        font-size:30px;
+        font-weight:400;
+    }
+    .item_cell_box{
+
+    }
+    .kh_pic{
+        margin-top:9px;
+        float:left;
+        font-size:19px;
+        padding:2px 15px;
+        color:#fff;
+        line-height:26px;
+        border-radius:7px;
+        font-weight:300;
+        background: linear-gradient(to right, #FA7C7D , rgb(255, 35, 189));
+    }
+    .item_cell_flex{
+        font-size:25px;
+        font-weight:600;
+        padding-left:78px;
+    }
+    .goosinfo{
+        background:rgb(245, 245, 245);
+        padding:20px;
+    }
+    .address{
+        padding:40px;
+        text-align:center;
+        margin:0 20px;
+        border:2px solid rgb(201, 201, 201);
+    }
+    .add{
+        margin:0 auto;
+        width:40px;
+        height:40px;
+        border-radius:5px;
+        font-size:50px;
+        line-height:36px;
+        color:rgb(201, 201, 201);
+        border:1px solid rgb(201, 201, 201);
+    }
+    .kh_tadd{
+        color:rgb(201, 201, 201);
+        margin-top:40px;
+    }
+    .footer{
+        padding:20px;
+    }
+    .kh_btn{
+        width:50%;
+        color:#fff;
+        background:#FF1E82;
+        line-height:2em;
+    }
+    .kh_address{
+        text-align:left;
+    }
+  
+</style>
+<body>
+<!--we7/pages/orderinfo/orderinfo.wxml-->
+<div class="page_article" style="background:#ffffff;padding:10px 30px;padding-bottom:70px;">
+    <div class="article_list_item ">
+        <div class="weui-cell weui-cell_access">
+            <div class="weui-cell__hd kh_tcode">订单编号：</div>
+            <div class="weui-cell__bd kh_code">20148754</div>
+        </div>
+        <div class="weui-cell weui-cell_access">
+            <div class="weui-cell__hd kh_tcode">商品详情</div>
+        </div>
+        <div class="weui-cell weui-cell_access goosinfo">
+
+            <div class="weui-cell__hd">
+                <img  src=""/>
+            </div>
+            <div class="weui-cell__bd kh_list_bd">
+                <div class="kh_list_title" style="color:#333333">5656+65+6</div>
+
+                <div class="item_cell_box">
+                    <div class="kh_pic">正品</div>
+                    <div class="item_cell_flex ">专柜价：￥130</div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="weui-cell weui-cell_access">
+            <div class="weui-cell__hd kh_tcode">收货地址</div>
+        </div>
+        <div class="address">
+                <div  bindtap="bindaddress" class="article_list_item ">
+                    <div class="add">
+                        +
+                    </div>
+                    <div class="kh_tadd">请填写收货地址</div>
+                </div>
+
+                <div  bindtap="bindaddress" class="article_list_item ">
+                    <div class="weui-cell__bd kh_address">
+                        <div>{{address}}</div>
+                        <div>{{name}} {{phone}}</div>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+
+        </div>
+
+    </div>
+    <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true">
+        <div class="footer">
+            <button class="kh_btn" formType="submit" >提交订单</button>
+        </div>
+    </form>
+</div>
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+
+<script type="text/javascript">
+
+</script>
+</html>

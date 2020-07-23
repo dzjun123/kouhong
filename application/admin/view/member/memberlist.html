@@ -1,0 +1,310 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i><a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		用户管理
+		<span class="c-gray en">&gt;</span>
+		用户管理
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<article class="cl pd-20">
+			<div class="text-c">
+				<span class="select-box inline">
+					<select name="level" class="select" id="level">
+						<option value="">用户类型</option>
+						<option value="1">推广用户</option>
+						<option value="0">普通用户</option>
+					</select>
+					</span>
+				日期范围：
+				<input type="text" onfocus="WdatePicker()" id="starttime" class="input-text Wdate" style="width:120px;">
+				-
+				<input type="text" onfocus="WdatePicker()" id="endtime" class="input-text Wdate" style="width:120px;">
+				<input type="hidden" name="top_openid" style="width:250px" class="input-text" id="top_openid" value="{$param['top_openid']}">
+
+				<input type="text" name="nickname" style="width:250px" class="input-text" id="nickname" placeholder="用户名">
+				<button name="" id="search" class="btn btn-success" type="button"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+
+			</div>
+			<!--<div class="panel panel-default mt-20 ">-->
+				<!--<div class="panel-header clearfix">-->
+                   <!--<span class="f-l">统计</span>-->
+				<!--</div>-->
+				<!--<div class="panel-body">-->
+					<!--<div style="border:1px solid #ddd;display:inline-block; padding:25px;margin-bottom:2px;">当前总人数  </div>-->
+
+				<!--</div>-->
+			<!--</div>-->
+			<div class="mt-20">
+				<table class="table table-border table-bordered table-bg table-hover table-sort">
+
+				</table>
+
+			</div>
+		</article>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script>
+    $(document).ready(function(){
+        //初始化博客分类树
+        //异步查询数据
+        table = $('.table-sort').dataTable({
+            "bStateSave": false,//状态保存
+            "bServerSide" : true, //是否启动服务器端数据导入
+            "bFilter": false, //去掉默认自带的搜索框
+            "aLengthMenu" : [10,20,40, 60, 100],
+            "sAjaxSource" : "{:url('member/memberlist')}",
+            "fnServerParams" : function(aoData) {
+                aoData.push({
+                    "name" : "criteria",
+                    "value" : {
+                        "level" : $("#level").val(),
+                        "phone" : $("#phone").val(),
+                        "nickname" : $("#nickname").val(),
+                        "endtime" : $("#endtime").val(),
+                        "starttime" : $("#starttime").val(),
+                        "top_openid" : $("#top_openid").val(),
+
+                    }
+                });
+            },
+            "aoColumns" : [{
+                "mData" : "id",
+                "sTitle" : "UID",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "header_url",
+                "sTitle" : "头像",
+
+                "sDefaultContent" : "",
+                "sClass" : "text-c",
+                "mRender" : function(data,type,full) {
+                    // console.log(full);
+                    return '<img src="'+data+'" style="width: 60px"/>';
+                },
+            } ,{
+                "mData" : "nickname",
+                "sTitle" : "昵称",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            },{
+                "mData" : "balance",//对应的属性名
+                // "bSortable" : false,//是否需要排序，默认是true
+                "sTitle" : "余额", //列名
+                "sDefaultContent" : "",//默认值
+                "sClass" : "text-c"//相当于css中的text-align，有text-l、text-c、text-r（左中右）这三个选择
+            },{
+                "mData" : "phone",
+                "sTitle" : "手机号",
+                "sDefaultContent" : "",
+                "sClass" : "text-c"
+            }
+                ,{
+                    "mData" : "paylog_url",
+                    "sTitle" : "充值记录",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                }
+                ,{
+                    "mData" : "game_url",
+                    "sTitle" : "游戏记录",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                }
+                ,{
+                    "mData" : "prize_url",
+                    "sTitle" : "奖品记录",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "orders_url",
+                    "sTitle" : "兑换记录",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "level",
+                    "sTitle" : "类型",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "status",
+                    "sTitle" : "用户状态",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "create_time",
+                    "sTitle" : "时间",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },
+                {
+                    "mData" : "id",
+                    "sTitle" : "操作",
+                    "sDefaultContent" : "",
+                    "sClass" : "text-c"
+                },],
+
+            "columnDefs": [{ "orderable": false, "targets": 1 }],
+            "fnServerData" : function(sSource, aoData, fnCallback) {
+
+                $.ajax({
+                    type : 'POST',
+                    url : sSource,
+                    async : false,
+                    data : {
+                        "aoData" : JSON.stringify(aoData)
+                    },
+                    success : fnCallback,
+
+                    error : function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status + "," + textStatus);
+                    }
+                });
+            },
+            "fnCallback" : function(data, aData, iDisplayIndex) {
+                // console.log(22,data);
+            },
+            "fnRowCallback" : function(nRow, aData, iDisplayIndex) {
+                console.log(123,nRow,aData);
+				var  czurl='<a href="'+aData.paylog_url+'">'+aData.reg_price +'-查看</a>';
+                var  yxurl='<a href="'+aData.game_url+'">'+aData.game_num +'-查看</a>';
+                var  jpurl='<a href="'+aData.prize_url+'">'+aData.prize_num +'-查看</a>';
+                var  dhurl='<a href="'+aData.orders_url+'">'+aData.order_num +'-查看</a>';
+
+                var cstr = "<a title='编辑' href='javascript:void(0);' onclick='member_edits("+aData.id+")' class='ml-5' style='text-decoration:none'>"+aData.level+"</a>";
+                    if(aData.statu==0){
+                        var cz= "<a title='编辑' href='javascript:void(0);' onclick='member_edit("+aData.id+")' class='ml-5' style='text-decoration:none'>充值</a> " +
+                            "<a title='拉黑' href='javascript:void(0);' onclick='black("+aData.id+")' class='ml-5' style='text-decoration:none'>拉黑</a>";
+					}else{
+                        var cz= "<a title='编辑' href='javascript:void(0);' onclick='member_edit("+aData.id+")' class='ml-5' style='text-decoration:none'>充值</a> " +
+                            "<a title='拉黑' href='javascript:void(0);' onclick='black("+aData.id+")' class='ml-5' style='text-decoration:none'>取消拉黑</a>";
+					}
+                $('td:eq(5)', nRow).html(czurl);
+                $('td:eq(6)', nRow).html(yxurl);
+                $('td:eq(7)', nRow).html(jpurl);
+                $('td:eq(8)', nRow).html(dhurl);
+
+                $('td:eq(9)', nRow).html(cstr);
+                $('td:eq(12)', nRow).html(cz);
+                return nRow;
+            }
+        });
+        //注册查询按钮事件
+        $("#search").bind("click", function () {
+            //做一些js的格式验证
+            table.fnDraw();
+        });
+
+    });
+
+</script>
+<script>
+    function member_edits(uid){
+        var title = "操作";
+        var url = "{:url('member/edituserdistr')}?id="+uid;
+        var index = layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['50%', '50%'],
+            content: url
+        });
+        // layer.full(index);
+        // layer_show(title,url,w,h);
+    }
+</script>
+<script>
+    function member_edit(uid){
+        var title = "操作";
+        var url = "{:url('member/recharge')}?id="+uid;
+        var index = layer.open({
+            type: 2,
+            title: title,
+            shadeClose: true,
+            shade: 0.8,
+            area: ['50%', '50%'],
+            content: url
+        });
+        // layer.full(index);
+        // layer_show(title,url,w,h);
+    }
+</script>
+<script type="text/javascript">
+
+    function black(id) {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "{:url('member/userblack')}",
+
+            cache: false,
+
+            dataType:"json",
+
+            data: {
+
+                id:id,
+
+            },		//表单ID
+
+            success: function(data) {
+
+                console.log(data);
+
+                if(data.statu == 0){
+
+                    layer.msg("操作成功");
+
+                    setTimeout(function () {
+
+                        window.location.reload();
+
+                    },500)
+
+                }
+
+                if(data.statu == 1){
+
+                    layer.msg("操作失败");
+
+                }
+
+            }
+
+        })
+
+    }
+
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

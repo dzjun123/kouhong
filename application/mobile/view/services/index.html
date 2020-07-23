@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>{$sysinfo['title']}</title>
+    <link rel="stylesheet" href="/static/css/weui.css" />
+    <link rel="stylesheet" href="/static/css/services.css" />
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?db897ff7d5136272fc631146fb2d9303";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<style>
+
+
+</style>
+<body>
+<div class="page">
+    <div>
+        <div class="kh_code">
+            <img src="" id="code_img"/>
+        </div>
+        <div class="kh_text">长按关注公众号</div>
+    </div>
+    <div class="footer">
+        <!--<button class=" click_button kh_btn" id="kh_btn">直接进入客服会话</button>-->
+    </div>
+</div>
+</body>
+<script src="/static/js/jquery-3.2.1.js"></script>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.config({$jssdkconfig});
+    wx.ready(function () {
+        wx.onMenuShareAppMessage({
+            title: "{$jssdksharedata['title']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            }
+        });
+        wx.onMenuShareTimeline({
+            title: "{$jssdksharedata['title_line']}", // 分享标题
+            desc: "{$jssdksharedata['desc']}", // 分享描述
+             imgUrl :"{$jssdksharedata['imgUrl']}",    // 分享显示的缩略图地址
+            link: "{$jssdksharedata['link']}", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            success: function () {
+                // 用户点击了分享后执行的回调函数
+                $.ajax({
+                    url: "{:url('member/sharebalace')}",
+                    data: {
+                    },
+                    dataType: "json",
+                    type: "post",
+                    success: function (res) {
+                        console.log(11,res);
+                        if(res.code==0){
+
+                        }
+                    }
+                })
+            },
+        })
+
+    })
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        $.ajax({
+            url: "{:url('index/getindex')}",
+            data: {},
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                console.log(66, res);
+                if (res.code == 0) {
+                    $("#code_img").attr("src", res.data.qrcode_url);
+
+                }
+            }
+        });
+    })
+</script>
+<script>
+    $("#kh_btn").click(function(){
+        console.log(132,12);
+        wx.miniProgram.redirectTo({
+            url: '../user/user'
+        });
+    });
+</script>
+</html>

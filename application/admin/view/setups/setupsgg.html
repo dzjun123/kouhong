@@ -1,0 +1,117 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<style>
+	.input-file {
+		width: 100px;
+		height: 32px;
+		position: absolute;
+		left: 220px;
+		top: 0;
+		cursor: pointer;
+		z-index: 1;
+		font-size: 30em;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+</style>
+<body>
+{include file="public/header" /}
+{include file="public/menu" /}
+
+<div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<!--/_menu 作为公共模版分离出去-->
+
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> <a class="" href="{:url('index/index')}">首页</a>
+		<span class="c-gray en">&gt;</span>
+		商品管理
+		<span class="c-gray en">&gt;</span>
+		商品管理
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<form action="" method="post" id="goods" class="form form-horizontal">
+			<input type="hidden" name="id" value="{$info['id']}">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">公告标题：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" class="input-text" name="notice_title" value="{$info['notice_title']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">公告内容：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<textarea name="notice_info" cols="" rows="" class="textarea">{$info['notice_info']}</textarea>
+				</div>
+			</div>
+
+
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button id="addgoods" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    $('#addtpl').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "{:url('sendmsg/gettplmsg')}",
+            cache: false,
+            dataType:"json",
+            data: {},		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    $("#tpl_msg_id_putgoods").val(data.template_id);
+                    layer.msg("设置成功");
+                }
+                if(data.statu == 1){
+                    layer.msg("设置失败");
+                }
+            }
+        })
+    })
+</script>
+<script type="text/javascript">
+    $('#addgoods').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            cache: false,
+            dataType:"json",
+            data: $("#goods").serializeArray(),		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    layer.msg("修改成功");
+                    // setTimeout(function () {
+                    //     window.location.href=data.url;
+                    // },500)
+                }
+                if(data.statu == 1){
+                    layer.msg("修改失败");
+                }
+            }
+        })
+    })
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

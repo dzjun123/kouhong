@@ -1,0 +1,115 @@
+﻿{include file="public/meta" /}
+<![endif]-->
+<title></title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<style>
+	.input-file {
+		width: 100px;
+		height: 32px;
+		position: absolute;
+		left: 220px;
+		top: 0;
+		cursor: pointer;
+		z-index: 1;
+		font-size: 30em;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+	.panel-body{
+		border:1px solid #E6E6EA;
+		margin:20px;
+		width:80%;
+		height:200px;
+	}
+</style>
+<body>
+
+<!--/_menu 作为公共模版分离出去-->
+
+<div>
+
+
+	<div>
+
+			<div class="panel-body">
+				<div class="col-sm-6">商品名称：{$info['title']}</div>
+				<div class="col-sm-6">订单编号：{$info['orderid']}</div>
+				<div class="col-sm-6">商品图片：<img src="{$info['img_url']}" style="width: 120px"></div>
+				<div class="col-sm-6">收货人：{$info['name']}</div>
+				<div class="col-sm-6">联系电话：{$info['phone']}</div>
+				<div class="col-sm-6">收货地址：{$info['address']}</div>
+			</div>
+
+		<form action="" method="post" id="goods" class="form form-horizontal">
+			<input type="hidden" name="id" value="{$info['id']}">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">物流公司：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" class="input-text" name="courier_unit" value="{$info['courier_unit']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">物流单号：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" class="input-text" name="courier_no" value="{$info['courier_no']}">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">备注：</label>
+				<div class="formControls col-xs-4 col-sm-3">
+					<input type="text" class="input-text" name="remark" value="{$info['remark']}">
+				</div>
+			</div>
+
+
+
+			<div class="row cl">
+				<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+					<button id="addgoods" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer" /}
+<!--请在下方写此页面业务相关的脚本-->
+
+<script type="text/javascript">
+    $('#addgoods').click(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "",
+            cache: false,
+            dataType:"json",
+            data: $("#goods").serializeArray(),		//表单ID
+            success: function(data) {
+                console.log(data);
+                if(data.statu == 0){
+                    layer.msg("保存成功");
+
+
+                    window.parent.location.reload();
+                    var index = parent.layer.getFrameIndex(window.name);
+                    setTimeout(function () {
+                        parent.layer.close(index);
+                    },500)
+                }
+                if(data.statu == 9001){
+                    layer.msg("保存失败");
+                }
+            }
+        })
+    })
+</script>
+
+<!--此乃百度统计代码，请自行删除-->
+
+<!--/此乃百度统计代码，请自行删除-->
+</body>
+</html>

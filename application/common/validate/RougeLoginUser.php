@@ -1,0 +1,1 @@
+<?phpnamespace app\common\validate;use think\Validate;class RougeLoginUser extends Validate{    protected $rule = [        'username'=>'unique:member',    ];    protected $message = [        'username.unique'=>'用户名已存在',    ];    protected $scene = [        'add'=>['username'],        'edit'=>['username'],    ];}
